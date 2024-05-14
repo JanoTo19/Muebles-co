@@ -17,7 +17,7 @@ import javax.swing.border.EmptyBorder;
 import controller.BaseDatos;
 import controller.Encriptacion;
 
-public class VentanaInicio extends JFrame {
+public class VentanaInicioSesion extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -26,7 +26,7 @@ public class VentanaInicio extends JFrame {
 	private JButton btnIniciar;
 	private Encriptacion en = new Encriptacion();
 
-	public VentanaInicio() {
+	public VentanaInicioSesion() {
 		inicializarComponentes();
 		agregarAcciones();
 	}

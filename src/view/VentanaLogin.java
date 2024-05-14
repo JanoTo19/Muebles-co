@@ -82,7 +82,7 @@ public class VentanaLogin extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				VentanaInicio vInicio = new VentanaInicio();
+				VentanaInicioSesion vInicio = new VentanaInicioSesion();
 				vInicio.setVisible(true);
 				dispose();
 				
