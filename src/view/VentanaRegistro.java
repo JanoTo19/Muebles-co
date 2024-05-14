@@ -20,11 +20,12 @@ import model.Usuario;
 
 public class VentanaRegistro extends JFrame {
 
+	private Font fuente = new Font("Tahoma", Font.PLAIN, 20);
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
-	private JTextField txtUsuario;
 	private JPasswordField txtPassword;
+	private JTextField txtUsuario;
 	private JButton btnRegistrar;
+	private JPanel contentPane;
 
 	public VentanaRegistro() {
 		inicializarComponentes();
@@ -52,12 +53,12 @@ public class VentanaRegistro extends JFrame {
 	private void agregarEtiquetas() {
 
 		JLabel lblUsuario = new JLabel("Usuario");
-		lblUsuario.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblUsuario.setFont(fuente);
 		lblUsuario.setBounds(82, 80, 74, 25);
 		contentPane.add(lblUsuario);
 
 		JLabel lblContraseña = new JLabel("Contraseña");
-		lblContraseña.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblContraseña.setFont(fuente);
 		lblContraseña.setBounds(48, 133, 108, 25);
 		contentPane.add(lblContraseña);
 
@@ -79,7 +80,7 @@ public class VentanaRegistro extends JFrame {
 	private void agregarBotones() {
 
 		btnRegistrar = new JButton("Registrarse");
-		btnRegistrar.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		btnRegistrar.setFont(fuente);
 		btnRegistrar.setBounds(111, 182, 151, 33);
 		contentPane.add(btnRegistrar);
 

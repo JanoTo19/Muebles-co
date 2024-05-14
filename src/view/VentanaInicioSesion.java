@@ -20,10 +20,11 @@ import model.Usuario;
 
 public class VentanaInicioSesion extends JFrame {
 
+	private Font fuente = new Font("Tahoma", Font.PLAIN, 20);
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
-	private JTextField txtUsuario;
 	private JPasswordField txtPassword;
+	private JTextField txtUsuario;
+	private JPanel contentPane;
 	private JButton btnIniciar;
 
 	public VentanaInicioSesion() {
@@ -52,12 +53,12 @@ public class VentanaInicioSesion extends JFrame {
 	private void agregarEtiquetas() {
 
 		JLabel lblUsuario = new JLabel("Usuario");
-		lblUsuario.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblUsuario.setFont(fuente);
 		lblUsuario.setBounds(82, 80, 74, 25);
 		contentPane.add(lblUsuario);
 
 		JLabel lblContraseña = new JLabel("Contraseña");
-		lblContraseña.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblContraseña.setFont(fuente);
 		lblContraseña.setBounds(48, 133, 108, 25);
 		contentPane.add(lblContraseña);
 
@@ -79,7 +80,7 @@ public class VentanaInicioSesion extends JFrame {
 	private void agregarBotones() {
 
 		btnIniciar = new JButton("Iniciar Sesion");
-		btnIniciar.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		btnIniciar.setFont(fuente);
 		btnIniciar.setBounds(111, 182, 158, 33);
 		contentPane.add(btnIniciar);
 

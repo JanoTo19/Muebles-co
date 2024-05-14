@@ -14,6 +14,7 @@ import javax.swing.border.EmptyBorder;
 
 public class VentanaLogin extends JFrame {
 
+	private Font fuente = new Font("Tahoma", Font.PLAIN, 20);
 	private static final long serialVersionUID = 1L;
 	private JButton btnIniciar,btnRegistro,btnSalir;
 	private JPanel miPanel;
@@ -47,7 +48,7 @@ public class VentanaLogin extends JFrame {
 
 	private void agregarEtiquetas() {
 		JLabel lblTitulo = new JLabel("Muebles&Co");
-		lblTitulo.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblTitulo.setFont(fuente);
 		lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitulo.setBounds(111, 10, 243, 21);
 		miPanel.add(lblTitulo);
@@ -55,17 +56,17 @@ public class VentanaLogin extends JFrame {
 
 	private void agregarBotones() {
 		btnIniciar = new JButton("Iniciar Sesion");
-		btnIniciar.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		btnIniciar.setFont(fuente);
 		btnIniciar.setBounds(151, 65, 173, 28);
 		miPanel.add(btnIniciar);
 		
 		btnRegistro = new JButton("Registro");
-		btnRegistro.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		btnRegistro.setFont(fuente);
 		btnRegistro.setBounds(151, 120, 173, 28);
 		miPanel.add(btnRegistro);
 		
 		btnSalir = new JButton("Salir");
-		btnSalir.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		btnSalir.setFont(fuente);
 		btnSalir.setBounds(151, 174, 173, 28);
 		miPanel.add(btnSalir);
 	}

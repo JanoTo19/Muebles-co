@@ -14,9 +14,10 @@ import javax.swing.border.EmptyBorder;
 
 public class VentanaPrincipal extends JFrame {
 
+	private Font fuente = new Font("Tahoma", Font.PLAIN, 20);
 	private static final long serialVersionUID = 1L;
-	private JButton btnSalir;
 	private JPanel contentPane;
+	private JButton btnSalir;
 	
 	public VentanaPrincipal(String nombre) {
 		inicializarComponentes(nombre);
@@ -43,14 +44,14 @@ public class VentanaPrincipal extends JFrame {
 	private void agregarEtiquetas(String nombre) {
 		JLabel lblBienvenida = new JLabel("Bienvenido " + nombre);
 		lblBienvenida.setHorizontalAlignment(SwingConstants.CENTER);
-		lblBienvenida.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblBienvenida.setFont(fuente);
 		lblBienvenida.setBounds(10, 10, 416, 23);
 		contentPane.add(lblBienvenida);
 	}
 	
 	private void agregarBotones() {
 		btnSalir = new JButton("X");
-		btnSalir.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		btnSalir.setFont(fuente);
 		btnSalir.setBounds(358, 15, 47, 47);
 		contentPane.add(btnSalir);
 	}
