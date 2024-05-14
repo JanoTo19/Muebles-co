@@ -136,7 +136,8 @@ public class Login extends JFrame { //los métodos están heredados de la clase 
 				if (bbdd.loginDB(textField_username.getText(),contraseñaCifrada)) {
 					System.out.println("Todo ok");
 					MenuPrincipal ventanaPrincipal = new MenuPrincipal(textField_username.getText());
-	                
+					// Mostrar la ventana principal
+                    ventanaPrincipal.setVisible(true);
 					//ejecutar la clase menuprincipal.java
 					this.setVisible(false);
 				}else {
@@ -152,26 +153,27 @@ public class Login extends JFrame { //los métodos están heredados de la clase 
 //			bbdd.cerrarBD();
 		}
 	}
-	public static String cifrarContraseña(String contraseña) throws NoSuchAlgorithmException {
-	    // Definir una sal fija para que el cifrado sea determinista
-	    byte[] salt = "MiSalFijaParaCifrado".getBytes();
+    public static String cifrarContraseña(String contraseña) throws NoSuchAlgorithmException {
+	//        // Generar una sal aleatoria
+	//        SecureRandom random = new SecureRandom();
+	//        byte[] salt = new byte[16];
+	//        random.nextBytes(salt);
+            // Cadena fija para la sal
+            byte[] salt = "EstoEsUnaSalFija".getBytes();
 
-	    // Crear un arreglo que contenga la concatenación de la contraseña y la sal
-	    byte[] contraseñaConSal = new byte[contraseña.length() + salt.length];
-	    System.arraycopy(contraseña.getBytes(), 0, contraseñaConSal, 0, contraseña.length());
-	    System.arraycopy(salt, 0, contraseñaConSal, contraseña.length(), salt.length);
+            // Agregar la sal a la contraseña
+            String contraseñaConSal = contraseña + new String(salt);
 
-	    // Crear instancia de MessageDigest para SHA-256
-	    MessageDigest digest = MessageDigest.getInstance("SHA-256");
-	    byte[] hash = digest.digest(contraseñaConSal);
+            // Crear instancia de MessageDigest para SHA-256
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(contraseñaConSal.getBytes());
 
-	    // Convertir el hash y la sal a base64 para almacenarlos en la base de datos
-	    String contraseñaCifrada = Base64.getEncoder().encodeToString(hash);
-	    String salBase64 = Base64.getEncoder().encodeToString(salt);
-
-	    // Formato para almacenar en la base de datos: hash:sal
-	    return contraseñaCifrada + ":" + salBase64;
-	}
-
-
+            // Convertir el hash y la sal a base64 para almacenarlos en la base de datos
+            String contraseñaCifrada = Base64.getEncoder().encodeToString(hash);
+ //           String salBase64 = Base64.getEncoder().encodeToString(salt);
+ //           String resultado= contraseñaCifrada;
+            //+ ":" + salBase64;
+            // Formato para almacenar en la base de datos: hash:sal
+            return contraseñaCifrada;
+        }
 }
