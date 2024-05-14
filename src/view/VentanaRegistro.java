@@ -1,4 +1,4 @@
-package mypkt;
+package view;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -14,16 +14,17 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-public class VentanaInicio extends JFrame {
+import controller.BaseDatos;
+
+public class VentanaRegistro extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField txtUsuario;
 	private JPasswordField txtPassword;
-	private JButton btnIniciar;
-	private Encriptacion en = new Encriptacion();
+	private JButton btnRegistrar;
 
-	public VentanaInicio() {
+	public VentanaRegistro() {
 		inicializarComponentes();
 		agregarAcciones();
 	}
@@ -71,37 +72,33 @@ public class VentanaInicio extends JFrame {
 
 	private void agregarBotones() {
 
-		btnIniciar = new JButton("Iniciar Sesion");
-		btnIniciar.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		btnIniciar.setBounds(111, 182, 158, 33);
-		contentPane.add(btnIniciar);
+		btnRegistrar = new JButton("Registrarse");
+		btnRegistrar.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		btnRegistrar.setBounds(111, 182, 151, 33);
+		contentPane.add(btnRegistrar);
 
 	}
 
 	private void agregarAcciones() {
 
-		btnIniciar.addActionListener(new ActionListener() {
+		btnRegistrar.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String password = new String(txtPassword.getPassword());
 				BaseDatos bbdd = new BaseDatos();
+
 				try {
-					if (!(txtUsuario.getText().isBlank() || password.isBlank())) {
-						if (bbdd.iniciarSesion(txtUsuario.getText(), password)) {
-							JOptionPane.showMessageDialog(null, "Login Exitoso", "Mensaje",
-									JOptionPane.INFORMATION_MESSAGE);
-							VentanaPrincipal vInicio = new VentanaPrincipal(txtUsuario.getText());
-							vInicio.setVisible(true);
-							dispose();
-							
-						} else {
-							JOptionPane.showMessageDialog(null, "Login Fallido", "Mensaje",
-									JOptionPane.INFORMATION_MESSAGE);
-						}
+
+					if (txtUsuario.getText().isBlank() || password.isBlank()) {
+						JOptionPane.showMessageDialog(null, "error", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
 					} else {
-						JOptionPane.showMessageDialog(null, "Error", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+						bbdd.registrarse(txtUsuario.getText(), password);
+						dispose();
+						VentanaLogin vLogin = new VentanaLogin();
+						vLogin.setVisible(true);
 					}
+
 				} catch (SQLException ex) {
 					JOptionPane.showMessageDialog(null, "Error en la base de datos. " + ex.getMessage(), "Mensaje",
 							JOptionPane.ERROR_MESSAGE);

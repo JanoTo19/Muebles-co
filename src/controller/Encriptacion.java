@@ -1,4 +1,4 @@
-package mypkt;
+package controller;
 
 import java.security.MessageDigest;
 import java.util.Arrays;

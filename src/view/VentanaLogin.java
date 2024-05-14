@@ -1,4 +1,4 @@
-package mypkt;
+package view;
 
 import java.awt.Font;
 import java.awt.Toolkit;

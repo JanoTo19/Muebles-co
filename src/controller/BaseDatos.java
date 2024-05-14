@@ -1,4 +1,4 @@
-package mypkt;
+package controller;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
