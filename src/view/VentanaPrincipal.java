@@ -2,7 +2,10 @@ package view;
 
 import java.awt.Font;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -12,6 +15,7 @@ import javax.swing.border.EmptyBorder;
 public class VentanaPrincipal extends JFrame {
 
 	private static final long serialVersionUID = 1L;
+	private JButton btnSalir;
 	private JPanel contentPane;
 	
 	public VentanaPrincipal(String nombre) {
@@ -33,6 +37,7 @@ public class VentanaPrincipal extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		agregarEtiquetas(nombre);
+		agregarBotones();
 	}
 
 	private void agregarEtiquetas(String nombre) {
@@ -42,9 +47,24 @@ public class VentanaPrincipal extends JFrame {
 		lblBienvenida.setBounds(10, 10, 416, 23);
 		contentPane.add(lblBienvenida);
 	}
+	
+	private void agregarBotones() {
+		btnSalir = new JButton("X");
+		btnSalir.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		btnSalir.setBounds(358, 15, 47, 47);
+		contentPane.add(btnSalir);
+	}
 
 	private void agregarAcciones() {
-
+		btnSalir.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				VentanaLogin vLogin = new VentanaLogin();
+				vLogin.setVisible(true);
+				dispose();
+			}
+		});
 	}
 
 }
