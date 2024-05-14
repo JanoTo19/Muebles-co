@@ -15,7 +15,6 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import controller.BaseDatos;
-import controller.Encriptacion;
 
 public class VentanaInicioSesion extends JFrame {
 
@@ -24,7 +23,6 @@ public class VentanaInicioSesion extends JFrame {
 	private JTextField txtUsuario;
 	private JPasswordField txtPassword;
 	private JButton btnIniciar;
-	private Encriptacion en = new Encriptacion();
 
 	public VentanaInicioSesion() {
 		inicializarComponentes();
