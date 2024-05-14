@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import controller.BaseDatos;
+import model.Usuario;
 
 public class VentanaRegistro extends JFrame {
 
@@ -91,14 +92,15 @@ public class VentanaRegistro extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String password = new String(txtPassword.getPassword());
+				Usuario user = new Usuario(password,txtUsuario.getText());
 				BaseDatos bbdd = new BaseDatos();
 
 				try {
 
-					if (txtUsuario.getText().isBlank() || password.isBlank()) {
+					if (user.getNombre().isBlank() || user.getContraseña().isBlank()) {
 						JOptionPane.showMessageDialog(null, "error", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
 					} else {
-						bbdd.registrarse(txtUsuario.getText(), password);
+						bbdd.registrarse(user.getNombre(), user.getContraseña());
 						dispose();
 						VentanaLogin vLogin = new VentanaLogin();
 						vLogin.setVisible(true);

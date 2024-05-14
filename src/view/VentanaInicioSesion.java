@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import controller.BaseDatos;
+import model.Usuario;
 
 public class VentanaInicioSesion extends JFrame {
 
@@ -91,13 +92,14 @@ public class VentanaInicioSesion extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String password = new String(txtPassword.getPassword());
+				Usuario user = new Usuario(txtUsuario.getText(),password);
 				BaseDatos bbdd = new BaseDatos();
 				try {
-					if (!(txtUsuario.getText().isBlank() || password.isBlank())) {
+					if (!(user.getNombre().isBlank() || user.getContraseña().isBlank())) {
 						if (bbdd.iniciarSesion(txtUsuario.getText(), password)) {
 							JOptionPane.showMessageDialog(null, "Login Exitoso", "Mensaje",
 									JOptionPane.INFORMATION_MESSAGE);
-							VentanaPrincipal vInicio = new VentanaPrincipal(txtUsuario.getText());
+							VentanaPrincipal vInicio = new VentanaPrincipal(user.getNombre());
 							vInicio.setVisible(true);
 							dispose();
 							
