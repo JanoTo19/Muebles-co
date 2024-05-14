@@ -43,9 +43,7 @@ public class BaseDatos {
 		String sql = "SELECT * FROM usuarios WHERE User='" + user + "' AND Pass='" + contraseña + "'";
 
 		try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
-			while (rs.next()) {
-				JOptionPane.showMessageDialog(null, "Inicio de sesion exitoso", "Mensaje",
-						JOptionPane.INFORMATION_MESSAGE);
+			if (rs.next()) {
 				respuesta = true;
 			}
 
@@ -55,11 +53,10 @@ public class BaseDatos {
 
 	public void registrarse(String user, String pass) throws SQLException {
 
-		String sql = "";
 		Scanner ent = new Scanner(System.in);
 		String contraseña = en.encriptar(pass);
 
-		sql = "INSERT INTO usuarios VALUES('" + user + "','" + contraseña + "')";
+		String sql = "INSERT INTO usuarios VALUES('" + user + "','" + contraseña + "')";
 		
 
 		try (Statement stmt = conn.createStatement()) {

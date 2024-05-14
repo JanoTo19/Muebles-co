@@ -91,7 +91,10 @@ public class VentanaInicio extends JFrame {
 						if (bbdd.iniciarSesion(txtUsuario.getText(), password)) {
 							JOptionPane.showMessageDialog(null, "Login Exitoso", "Mensaje",
 									JOptionPane.INFORMATION_MESSAGE);
+							VentanaPrincipal vInicio = new VentanaPrincipal(txtUsuario.getText());
+							vInicio.setVisible(true);
 							dispose();
+							
 						} else {
 							JOptionPane.showMessageDialog(null, "Login Fallido", "Mensaje",
 									JOptionPane.INFORMATION_MESSAGE);
