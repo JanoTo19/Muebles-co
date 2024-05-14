@@ -85,10 +85,18 @@ public class VentanaRegistro extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String password = new String(txtPassword.getPassword());
 				BaseDatos bbdd = new BaseDatos();
+
 				try {
-					bbdd.registrarse(txtUsuario.getText(), password);
-					VentanaLogin vLogin = new VentanaLogin();
-					vLogin.setVisible(true);
+
+					if (txtUsuario.getText().isBlank() || password.isBlank()) {
+						JOptionPane.showMessageDialog(null, "error", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+					} else {
+						bbdd.registrarse(txtUsuario.getText(), password);
+						dispose();
+						VentanaLogin vLogin = new VentanaLogin();
+						vLogin.setVisible(true);
+					}
+
 				} catch (SQLException ex) {
 					JOptionPane.showMessageDialog(null, "Error en la base de datos. " + ex.getMessage(), "Mensaje",
 							JOptionPane.ERROR_MESSAGE);

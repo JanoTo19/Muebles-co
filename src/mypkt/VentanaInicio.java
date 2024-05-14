@@ -21,7 +21,8 @@ public class VentanaInicio extends JFrame {
 	private JTextField txtUsuario;
 	private JPasswordField txtPassword;
 	private JButton btnIniciar;
-	
+	private Encriptacion en = new Encriptacion();
+
 	public VentanaInicio() {
 		inicializarComponentes();
 		agregarAcciones();
@@ -47,21 +48,21 @@ public class VentanaInicio extends JFrame {
 		lblUsuario.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblUsuario.setBounds(82, 80, 74, 25);
 		contentPane.add(lblUsuario);
-		
+
 		JLabel lblContraseña = new JLabel("Contraseña");
 		lblContraseña.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblContraseña.setBounds(48, 133, 108, 25);
 		contentPane.add(lblContraseña);
-		
+
 	}
 
 	private void agregarCamposTexto() {
-		
+
 		txtUsuario = new JTextField();
 		txtUsuario.setBounds(196, 87, 96, 19);
 		contentPane.add(txtUsuario);
 		txtUsuario.setColumns(10);
-		
+
 		txtPassword = new JPasswordField();
 		txtPassword.setBounds(196, 140, 96, 19);
 		contentPane.add(txtPassword);
@@ -69,7 +70,7 @@ public class VentanaInicio extends JFrame {
 	}
 
 	private void agregarBotones() {
-		
+
 		btnIniciar = new JButton("Iniciar Sesion");
 		btnIniciar.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		btnIniciar.setBounds(111, 182, 158, 33);
@@ -78,20 +79,31 @@ public class VentanaInicio extends JFrame {
 	}
 
 	private void agregarAcciones() {
-		
+
 		btnIniciar.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String password = new String(txtPassword.getPassword());
 				BaseDatos bbdd = new BaseDatos();
 				try {
-					bbdd.iniciarSesion(txtUsuario.getText(),password);
-					dispose();
+					if (!(txtUsuario.getText().isBlank() || password.isBlank())) {
+						if (bbdd.iniciarSesion(txtUsuario.getText(), password)) {
+							JOptionPane.showMessageDialog(null, "Login Exitoso", "Mensaje",
+									JOptionPane.INFORMATION_MESSAGE);
+							dispose();
+						} else {
+							JOptionPane.showMessageDialog(null, "Login Fallido", "Mensaje",
+									JOptionPane.INFORMATION_MESSAGE);
+						}
+					} else {
+						JOptionPane.showMessageDialog(null, "Error", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+					}
 				} catch (SQLException ex) {
-					JOptionPane.showMessageDialog(null, "Error en la base de datos. " + ex.getMessage(),"Mensaje",JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Error en la base de datos. " + ex.getMessage(), "Mensaje",
+							JOptionPane.ERROR_MESSAGE);
 				}
-				
+
 			}
 		});
 

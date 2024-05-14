@@ -36,36 +36,36 @@ public class BaseDatos {
 		}
 	}
 
-	public void iniciarSesion(String user,String pass) throws SQLException {
+	public boolean iniciarSesion(String user, String pass) throws SQLException {
 
-		String sql = "";
+		boolean respuesta = false;
+		String contraseña = en.encriptar(pass);
+		String sql = "SELECT * FROM usuarios WHERE User='" + user + "' AND Pass='" + contraseña + "'";
 
-		try (Statement stmt = conn.createStatement()) {
-			pass = en.encriptar(pass);
-
-			sql = "SELECT * FROM usuarios WHERE User='" + user + "' AND Pass='" + pass + "'";
-
-			try (ResultSet rs = stmt.executeQuery(sql)) {
-				while (rs.next()) {
-					JOptionPane.showMessageDialog(null, "Inicio de sesion exitoso", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
-				}
+		try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+			while (rs.next()) {
+				JOptionPane.showMessageDialog(null, "Inicio de sesion exitoso", "Mensaje",
+						JOptionPane.INFORMATION_MESSAGE);
+				respuesta = true;
 			}
-		}
 
+		}
+		return respuesta;
 	}
 
 	public void registrarse(String user, String pass) throws SQLException {
 
 		String sql = "";
 		Scanner ent = new Scanner(System.in);
-		
-		pass = en.encriptar(pass);
+		String contraseña = en.encriptar(pass);
 
-		sql = "INSERT INTO usuarios VALUES('" + user + "','" + pass + "')";
+		sql = "INSERT INTO usuarios VALUES('" + user + "','" + contraseña + "')";
+		
 
 		try (Statement stmt = conn.createStatement()) {
 			stmt.executeUpdate(sql);
-			JOptionPane.showMessageDialog(null, "Usuario " + user + " añadido exitosamente", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Usuario " + user + " añadido exitosamente", "Mensaje",
+					JOptionPane.INFORMATION_MESSAGE);
 		}
 
 	}
