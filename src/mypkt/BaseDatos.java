@@ -36,19 +36,19 @@ public class BaseDatos {
 	}
 
 	public void iniciarSesion() throws SQLException {
-		
-		String usuario = "", contraseña = "", sql = "";
+
+		String user = "", pass = "", sql = "";
 		Scanner ent = new Scanner(System.in);
 
 		try (Statement stmt = conn.createStatement()) {
 
 			System.out.println("Introduce el usuario");
-			usuario = ent.nextLine();
+			user = ent.nextLine();
 
 			System.out.println("Introduce la contraseña");
-			contraseña = ent.nextLine();
-			
-			sql = "SELECT * FROM clientes WHERE Usuario='" + usuario + "' AND Contraseña='" + contraseña + "'";
+			pass = ent.nextLine();
+
+			sql = "SELECT * FROM clientes WHERE Usuario='" + user + "' AND Contraseña='" + pass + "'";
 
 			try (ResultSet rs = stmt.executeQuery(sql)) {
 				while (rs.next()) {
@@ -60,48 +60,23 @@ public class BaseDatos {
 	}
 
 	public void registrarse() throws SQLException {
-		
-		String nombre = "", apellido = "", usuario = "", email = "", contraseña = "", sql = "";
+
+		String user = "", pass = "", sql = "";
 		Scanner ent = new Scanner(System.in);
-		int telefono = 0;
 
-		while (nombre.isBlank()) {
-			System.out.println("Introduce tu nombre");
-			nombre = ent.nextLine();
-		}
-
-		while (apellido.isBlank()) {
-			System.out.println("Introduce tus apellidos");
-			apellido = ent.nextLine();
-		}
-
-		while (usuario.isBlank()) {
+		while (user.isBlank()) {
 			System.out.println("Introduce el nombre de usuario");
-			usuario = ent.nextLine();
+			user = ent.nextLine();
 		}
 
-		while (telefono <= 0) {
-			System.out.println("Introduce el telefono");
-			telefono = Integer.parseInt(ent.nextLine());
-		}
-
-		while (email.isBlank()) {
-			System.out.println("Introduce el email");
-			email = ent.nextLine();
-			if (!email.contains("@")) {
-				email = "";
-			}
-		}
-
-		while (contraseña.isBlank()) {
+		while (pass.isBlank()) {
 			System.out.println("Introduce la contraseña");
-			contraseña = ent.nextLine();
+			pass = ent.nextLine();
 		}
-		
-		sql = "INSERT INTO clientes(Nombre,Apellidos,Usuario,Telefono,Email,Contraseña) VALUES('" + nombre + "','"
-				+ apellido + "','" + usuario + "'," + telefono + ",'" + email + "','" + contraseña + "')";
-		
-		try(Statement stmt = conn.createStatement()) {
+
+		sql = "INSERT INTO clientes VALUES('" + user + "','" + pass + "')";
+
+		try (Statement stmt = conn.createStatement()) {
 			stmt.executeUpdate(sql);
 		}
 
