@@ -26,8 +26,8 @@ public class VentanaLogin extends JFrame {
 	}
 	
 	public static void main(String[] args) {
-		VentanaLogin frame = new VentanaLogin();
-		frame.setVisible(true);
+		VentanaLogin vLogin = new VentanaLogin();
+		vLogin.setVisible(true);
 	}
 
 	private void inicializarComponentes() {

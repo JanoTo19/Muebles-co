@@ -1,7 +1,5 @@
 package mypkt;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -10,33 +8,39 @@ public class VentanaInicio extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VentanaInicio frame = new VentanaInicio();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+	
+	public VentanaInicio() {
+		inicializarComponentes();
+		agregarAcciones();
 	}
 
-	/**
-	 * Create the frame.
-	 */
-	public VentanaInicio() {
+	private void inicializarComponentes() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
+
+		agregarEtiquetas();
+		agregarCamposTexto();
+		agregarBotones();
+	}
+
+	private void agregarEtiquetas() {
+
+	}
+
+	private void agregarCamposTexto() {
+
+	}
+
+	private void agregarBotones() {
+
+	}
+
+	private void agregarAcciones() {
+
 	}
 
 }

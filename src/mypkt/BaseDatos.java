@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 public class BaseDatos {
 
 	private Properties properties = new Properties();
+	private Encriptacion en = new Encriptacion();
 	private Connection conn;
 
 	public BaseDatos() {
@@ -47,6 +48,7 @@ public class BaseDatos {
 
 			System.out.println("Introduce la contraseña");
 			pass = ent.nextLine();
+			pass = en.encriptar(pass);
 
 			sql = "SELECT * FROM clientes WHERE Usuario='" + user + "' AND Contraseña='" + pass + "'";
 
@@ -72,6 +74,8 @@ public class BaseDatos {
 		while (pass.isBlank()) {
 			System.out.println("Introduce la contraseña");
 			pass = ent.nextLine();
+			pass = en.encriptar(pass);
+			
 		}
 
 		sql = "INSERT INTO clientes VALUES('" + user + "','" + pass + "')";
