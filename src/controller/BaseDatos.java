@@ -20,7 +20,7 @@ public class BaseDatos {
 	private Connection conn;
 
 	public BaseDatos() {
-		try (FileInputStream fis = new FileInputStream("./src/archivos/config.properties")) {
+		try (FileInputStream fis = new FileInputStream("./src/files/config.properties")) {
 
 			properties.load(fis);
 

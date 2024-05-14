@@ -20,15 +20,18 @@ public class VentanaPrincipal extends JFrame {
 	}
 
 	private void inicializarComponentes(String nombre) {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\Janot\\Documents\\Mis cosas\\cosas privadas\\Cosas importantes\\Personalizacion\\Fondos, Fotos e Iconos\\Iconos\\PNG\\3144460.png"));
-		setBounds(400, 213, 500, 313);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-
+		
+		setTitle("Muebles&Co");
+		setBounds(500, 200, 427, 313);
+		
+		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\Janot\\Documents\\Mis cosas\\cosas privadas\\Cosas importantes\\Personalizacion\\Fondos, Fotos e Iconos\\Iconos\\PNG\\3144460.png"));
+		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		agregarEtiquetas(nombre);
 	}
 

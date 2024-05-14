@@ -29,15 +29,17 @@ public class VentanaLogin extends JFrame {
 	}
 
 	private void inicializarComponentes() {
-		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\Janot\\Documents\\Mis cosas\\cosas privadas\\Cosas importantes\\Personalizacion\\Fondos, Fotos e Iconos\\Iconos\\PNG\\3144460.png"));
-		setTitle("Muebles&Co");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(500, 200, 485, 361);
 		miPanel = new JPanel();
 		miPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-
 		setContentPane(miPanel);
 		miPanel.setLayout(null);
+		
+		setTitle("Muebles&Co");
+		setBounds(500, 200, 485, 361);
+		
+		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\Janot\\Documents\\Mis cosas\\cosas privadas\\Cosas importantes\\Personalizacion\\Fondos, Fotos e Iconos\\Iconos\\PNG\\3144460.png"));
+		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		agregarEtiquetas();
 		agregarBotones();
