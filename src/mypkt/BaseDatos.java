@@ -36,52 +36,36 @@ public class BaseDatos {
 		}
 	}
 
-	public void iniciarSesion() throws SQLException {
+	public void iniciarSesion(String user,String pass) throws SQLException {
 
-		String user = "", pass = "", sql = "";
-		Scanner ent = new Scanner(System.in);
+		String sql = "";
 
 		try (Statement stmt = conn.createStatement()) {
-
-			System.out.println("Introduce el usuario");
-			user = ent.nextLine();
-
-			System.out.println("Introduce la contraseña");
-			pass = ent.nextLine();
 			pass = en.encriptar(pass);
 
-			sql = "SELECT * FROM clientes WHERE Usuario='" + user + "' AND Contraseña='" + pass + "'";
+			sql = "SELECT * FROM usuarios WHERE User='" + user + "' AND Pass='" + pass + "'";
 
 			try (ResultSet rs = stmt.executeQuery(sql)) {
 				while (rs.next()) {
-					System.out.println("Inicio de sesion exitoso");
+					JOptionPane.showMessageDialog(null, "Inicio de sesion exitoso", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 		}
 
 	}
 
-	public void registrarse() throws SQLException {
+	public void registrarse(String user, String pass) throws SQLException {
 
-		String user = "", pass = "", sql = "";
+		String sql = "";
 		Scanner ent = new Scanner(System.in);
+		
+		pass = en.encriptar(pass);
 
-		while (user.isBlank()) {
-			System.out.println("Introduce el nombre de usuario");
-			user = ent.nextLine();
-		}
-
-		while (pass.isBlank()) {
-			System.out.println("Introduce la contraseña");
-			pass = ent.nextLine();
-			pass = en.encriptar(pass);
-			
-		}
-
-		sql = "INSERT INTO clientes VALUES('" + user + "','" + pass + "')";
+		sql = "INSERT INTO usuarios VALUES('" + user + "','" + pass + "')";
 
 		try (Statement stmt = conn.createStatement()) {
 			stmt.executeUpdate(sql);
+			JOptionPane.showMessageDialog(null, "Usuario " + user + " añadido exitosamente", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
 		}
 
 	}

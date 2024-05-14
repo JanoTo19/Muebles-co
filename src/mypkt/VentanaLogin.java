@@ -4,12 +4,10 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
@@ -84,13 +82,20 @@ public class VentanaLogin extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				BaseDatos bbdd = new BaseDatos();
-				try {
-					bbdd.iniciarSesion();
-				} catch (SQLException ex) {
-					JOptionPane.showMessageDialog(null, "Error en la base de datos. " + ex.getMessage(),"Mensaje",JOptionPane.ERROR_MESSAGE);
-				}
+				VentanaInicio vInicio = new VentanaInicio();
+				vInicio.setVisible(true);
+				dispose();
 				
+			}
+		});
+		
+		btnRegistro.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				VentanaRegistro vRegistro = new VentanaRegistro();
+				vRegistro.setVisible(true);
+				dispose();
 			}
 		});
 
