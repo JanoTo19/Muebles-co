@@ -48,7 +48,7 @@ public class AltaProducto extends JFrame {
 
 		// Propiedades del marco
 		setTitle("Alta Producto");
-		setBounds(100, 100, 600, 400);
+		setBounds(500, 180, 600, 400);
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

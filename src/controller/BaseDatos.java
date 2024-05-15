@@ -12,6 +12,7 @@ import java.sql.Statement;
 import java.util.Properties;
 
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import view.MenuPrincipal;
@@ -134,5 +135,32 @@ public class BaseDatos {
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Error al recuperar la contraseña: " + e.getMessage());
 		}
+	}
+	
+	public void  eliminarProducto(JTable tablaProductos,DefaultTableModel modeloTabla) {
+		int filaSeleccionada = tablaProductos.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(null, "Por favor, selecciona una fila.");
+            return;
+        }
+
+        String nombreProducto = (String) modeloTabla.getValueAt(filaSeleccionada, 0); // Suponiendo que la primera columna es el nombre del producto
+
+        // Eliminar de la base de datos
+        String sql = "DELETE FROM productos WHERE nombre = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, nombreProducto);
+            int filasAfectadas = pstmt.executeUpdate();
+            if (filasAfectadas > 0) {
+                // Eliminar la fila del modelo de la tabla
+                modeloTabla.removeRow(filaSeleccionada);
+                JOptionPane.showMessageDialog(null, "Producto eliminado correctamente.");
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al eliminar el producto de la base de datos.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error de conexión a la base de datos.");
+        }
 	}
 }

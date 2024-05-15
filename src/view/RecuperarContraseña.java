@@ -29,7 +29,7 @@ public class RecuperarContraseña extends JFrame {
 	private void inicializarComponentes() {
 		setTitle("Recuperar Contraseña");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(500, 200, 450, 300);
+		setBounds(500, 180, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 

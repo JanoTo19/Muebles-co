@@ -24,7 +24,8 @@ public class MenuPrincipal extends JFrame {
 	private JPanel headerPanel;
 	private JPanel mainPanel;
 	private JTable tablaProductos;
-	private JButton btnSalir, btnAniadir;
+	private JButton btnSalir, btnAniadir, btnEliminar;
+	private DefaultTableModel modeloTabla;
 
 	public MenuPrincipal(String nombreUsuario) {
 		inicializarComponentes(nombreUsuario);
@@ -47,7 +48,7 @@ public class MenuPrincipal extends JFrame {
 		mainPanel.setBorder(BorderFactory.createTitledBorder("Resumen"));
 		miPanel.add(mainPanel, BorderLayout.CENTER);
 		
-		setBounds(100, 100, 800, 600);
+		setBounds(500, 180, 800, 600);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -66,7 +67,7 @@ public class MenuPrincipal extends JFrame {
 	private void agregarTablas() {
 		// Crear la tabla de productos
 		String[] columnas = { "Nombre", "Tipo", "Gama", "Cantidad", "Precio" };
-		DefaultTableModel modeloTabla = new DefaultTableModel(columnas, 0);
+		modeloTabla = new DefaultTableModel(columnas, 0);
 		tablaProductos = new JTable(modeloTabla);
 		JScrollPane scrollPane = new JScrollPane(tablaProductos);
 		mainPanel.add(scrollPane);
@@ -82,6 +83,9 @@ public class MenuPrincipal extends JFrame {
 		
 		btnAniadir = new JButton("Añadir Producto");
 		headerPanel.add(btnAniadir);
+		
+		btnEliminar = new JButton("Eliminar Producto");
+		headerPanel.add(btnEliminar);
 	}
 
 	private void agregarAcciones() {
@@ -101,6 +105,15 @@ public class MenuPrincipal extends JFrame {
 				aProducto.setVisible(true);
 				dispose();
 				
+			}
+		});
+		
+		btnEliminar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+						BaseDatos bbdd = new BaseDatos();
+						bbdd.eliminarProducto(tablaProductos,modeloTabla);
 			}
 		});
 	}

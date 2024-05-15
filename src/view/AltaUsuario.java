@@ -47,7 +47,7 @@ public class AltaUsuario extends JFrame {
 		
 		//pROPIEDADES DEL MARCO
 		setTitle("Alta Usuario APP");
-		setBounds(100, 100, 450, 300);
+		setBounds(500, 180, 450, 300);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

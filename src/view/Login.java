@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -57,7 +58,7 @@ public class Login extends JFrame {
 		
 		// Añadimos componentes al panel
 		setTitle("LOGIN APP");
-		setBounds(100, 100, 500, 500);
+		setBounds(500, 180, 500, 500);
 		
 		// pROPIEDADES DEL MARCO
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // es un método de la clase
@@ -167,8 +168,7 @@ public class Login extends JFrame {
 					// ejecutar la clase menuprincipal.java
 					this.setVisible(false);
 				} else {
-
-					System.out.println("Su nombre de usuario o contraseña es incorrecto");
+					JOptionPane.showMessageDialog(null, "Su nombre de usuario o contraseña es incorrecto");
 				}
 			} catch (NoSuchAlgorithmException e) {
 				// TODO Auto-generated catch block
