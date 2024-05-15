@@ -23,28 +23,6 @@ public class BaseDatos {
 	        }
 	    }
 
-//	    public boolean loginDB(String user, String pass) {
-//	        boolean loginOK = false;
-//
-//
-//	        try {
-//	            // Consulta SQL para verificar el usuario y la contraseña en la base de datos
-//	            String query = "SELECT * FROM usuarios WHERE username = '"+user+"' AND password ='"+pass+"'";
-//		        Statement stmt = (Statement) conn.createStatement();
-//		        ResultSet rs = stmt.executeQuery(query);
-//	            if (rs.next()) {
-//	                // El usuario y la contraseña son válidos
-//	                loginOK = true;
-//	            }
-//	        } catch (SQLException e) {
-//	            System.out.println("Error al verificar el usuario y contraseña: " + e.getMessage());
-//	        } 
-//
-//	        return loginOK;
-//	    }
-//	    public void cerrarBD() {
-//	    	
-//	    }
 	    public boolean loginDB(String username, String contraseñaCifrada) throws NoSuchAlgorithmException, SQLException {
 	        // Parámetros de conexión a la base de datos
 	        String bbdd = "proyectotienda"; // nombre de la base de datos

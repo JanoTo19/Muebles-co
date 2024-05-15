@@ -1,8 +1,6 @@
 package miApp;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -31,6 +29,7 @@ public class MenuPrincipal extends JFrame {
     private JPanel headerPanel;
     private JPanel mainPanel;
     private JTable tablaProductos;
+    private JButton btnNuevoProducto;
 
     public MenuPrincipal(String nombreUsuario) {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -49,7 +48,7 @@ public class MenuPrincipal extends JFrame {
         JLabel lblNewLabel = new JLabel("Usuario logeado: " + nombreUsuario);
         lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
         headerPanel.add(lblNewLabel);
-
+        
         // Botón para volver a la pantalla de Login
         JButton btnSalir = new JButton("Salir");
         btnSalir.addActionListener(new ActionListener() {
@@ -59,6 +58,16 @@ public class MenuPrincipal extends JFrame {
                 dispose();
             }
         });
+        String usuarioActivo=nombreUsuario;
+        btnNuevoProducto = new JButton("Alta Producto");
+        btnNuevoProducto.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+                AltaProducto ventanaAltaProducto = new AltaProducto(usuarioActivo);
+                dispose(); //borra la ventan de Login
+                ventanaAltaProducto.setVisible(true);
+        	}
+        });
+        headerPanel.add(btnNuevoProducto);
         headerPanel.add(btnSalir);
 
         // Crear el panel principal (main)
@@ -67,44 +76,56 @@ public class MenuPrincipal extends JFrame {
         miPanel.add(mainPanel, BorderLayout.CENTER);
 
         // Crear la tabla de productos
-        String[] columnas = {"Nombre", "Tipo", "Gama", "Cantidad", "Precio"};
+        String[] columnas = {"Usuario", "Id", "Nombre", "Tipo", "Gama", "Cantidad", "Precio"};
         DefaultTableModel modeloTabla = new DefaultTableModel(columnas, 0);
         tablaProductos = new JTable(modeloTabla);
         JScrollPane scrollPane = new JScrollPane(tablaProductos);
         mainPanel.add(scrollPane);
 
         // Obtener los datos de la tabla 'productos' de la base de datos
-        obtenerProductos(modeloTabla);
+        obtenerProductos(modeloTabla,usuarioActivo);
     }
     // Método para obtener los productos de la base de datos
-    private void obtenerProductos(DefaultTableModel modeloTabla) {
+    private void obtenerProductos(DefaultTableModel modeloTabla, String usuarioActivo) {
         try {
             // Establecer la conexión con la base de datos
             Connection conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/proyectotienda", "root", "");
 
-            // Crear la consulta SQL para obtener los productos
-            String sql = "SELECT nombre, tipo, gama, cantidad, precio FROM productos";
+            // Consultar el id_usuario del usuario activo
+            String id_user_sql = "SELECT id_usuario FROM usuarios WHERE username = '" + usuarioActivo + "'";
+            Statement idStmt = conn.createStatement();
+            ResultSet idRs = idStmt.executeQuery(id_user_sql);
+            idRs.next(); // Mover el cursor al primer resultado (asumiendo que solo habrá uno)
+            String id_usuario = idRs.getString("id_usuario");
+
+            // Crear la consulta SQL para obtener los productos del usuario activo
+            String productos_sql = "SELECT p.id_usuario, p.id, p.nombre, p.tipo, p.gama, p.cantidad, p.precio "
+                    + "FROM productos p WHERE p.id_usuario = '" + id_usuario + "'";
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
+            ResultSet rs = stmt.executeQuery(productos_sql);
 
             // Llenar la tabla con los datos de los productos
             while (rs.next()) {
+                String id = rs.getString("id");
                 String nombre = rs.getString("nombre");
                 String tipo = rs.getString("tipo");
                 String gama = rs.getString("gama");
                 int cantidad = rs.getInt("cantidad");
                 double precio = rs.getDouble("precio");
-                Object[] fila = {nombre, tipo, gama, cantidad, precio};
+                Object[] fila = {id_usuario, id, nombre, tipo, gama, cantidad, precio};
                 modeloTabla.addRow(fila);
             }
 
             // Cerrar recursos
             rs.close();
             stmt.close();
+            idRs.close();
+            idStmt.close();
             conn.close();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error al obtener los datos de la base de datos.");
             e.printStackTrace();
         }
     }
+
 }

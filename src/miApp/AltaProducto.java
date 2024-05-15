@@ -7,12 +7,14 @@ import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
@@ -29,7 +31,7 @@ public class AltaProducto extends JFrame {
     private final Font miFont = new Font("Tahoma", Font.PLAIN, 20);
     private JPanel mainPanel;
     
-    public AltaProducto() {
+    public AltaProducto(String usuarioActivo) {
         // Propiedades del marco
         setTitle("Alta Producto");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -101,17 +103,35 @@ public class AltaProducto extends JFrame {
 
         // Botón para dar de alta el producto
         JButton btnAltaProducto = new JButton("Dar de Alta Producto");
-        btnAltaProducto.setBounds(188, 269, 300, 30);
+        btnAltaProducto.setBounds(188, 273, 300, 30);
         mainPanel.add(btnAltaProducto);
         btnAltaProducto.setFont(miFont);
         btnAltaProducto.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                altaProducto();
+                altaProducto(usuarioActivo);
+                AltaProducto ventanaAltaProducto = new AltaProducto(usuarioActivo);
+                dispose(); //borra la ventan de Login
+                ventanaAltaProducto.setVisible(true);
             }
         });
+        
+        //Botón para volver al menu principal
+        JButton btnNewButton = new JButton("Volver");
+        btnNewButton.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+                MenuPrincipal ventanaMenuPrincipal = new MenuPrincipal(usuarioActivo);
+                dispose(); //borra la ventan de Login
+                ventanaMenuPrincipal.setVisible(true);
+        	}
+        });
+        btnNewButton.setBounds(39, 273, 89, 30);
+        mainPanel.add(btnNewButton);
+        btnNewButton.setFont(miFont);
+
+        
     }
 
-    private void altaProducto() {
+    private void altaProducto(String usuarioActivo) {
         // Obtener los datos del producto desde los campos de texto
         String nombre = textField_nombre.getText();
         String tipo = textField_tipo.getText();
@@ -119,25 +139,49 @@ public class AltaProducto extends JFrame {
         int cantidad = Integer.parseInt(textField_cantidad.getText());
         double precio = Double.parseDouble(textField_precio.getText());
 
-        // Insertar el producto en la base de datos
-        try (Connection conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/tu_basededatos", "usuario", "contraseña")) {
-            String sql = "INSERT INTO productos (nombre, tipo, gama, cantidad, precio) VALUES (?, ?, ?, ?, ?)";
-            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setString(1, nombre);
-                pstmt.setString(2, tipo);
-                pstmt.setString(3, gama);
-                pstmt.setInt(4, cantidad);
-                pstmt.setDouble(5, precio);
-                pstmt.executeUpdate();
-                System.out.println("Producto registrado correctamente.");
+        // Consultar el id_usuario del usuario activo
+        int idUsuarioActivo = 0;
+        try (Connection conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/proyectotienda", "root", "")) {
+            String idUserSql = "SELECT id_usuario FROM usuarios WHERE username = ?";
+            try (PreparedStatement idUserStmt = conn.prepareStatement(idUserSql)) {
+                idUserStmt.setString(1, usuarioActivo);
+                ResultSet idUserRs = idUserStmt.executeQuery();
+                if (idUserRs.next()) {
+                    idUsuarioActivo = idUserRs.getInt("id_usuario");
+                }
             } catch (SQLException ex) {
-                System.out.println("Error al insertar el producto en la base de datos.");
+                System.out.println("Error al consultar el id_usuario del usuario activo.");
                 ex.printStackTrace();
             }
         } catch (SQLException ex) {
             System.out.println("Error de conexión a la base de datos.");
             ex.printStackTrace();
         }
-    }
 
+        if (idUsuarioActivo != 0) {
+            // Insertar el producto en la base de datos
+            try (Connection conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/proyectotienda", "root", "")) {
+                String sql = "INSERT INTO productos (nombre, tipo, gama, cantidad, precio, id_usuario) VALUES (?, ?, ?, ?, ?, ?)";
+                try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                    pstmt.setString(1, nombre);
+                    pstmt.setString(2, tipo);
+                    pstmt.setString(3, gama);
+                    pstmt.setInt(4, cantidad);
+                    pstmt.setDouble(5, precio);
+                    pstmt.setInt(6, idUsuarioActivo); // Utiliza setInt para id_usuario
+                    pstmt.executeUpdate();
+                    System.out.println("Producto registrado correctamente.");
+                    JOptionPane.showMessageDialog(this, "El producto se añadió correctamente.");
+                } catch (SQLException ex) {
+                    System.out.println("Error al insertar el producto en la base de datos.");
+                    ex.printStackTrace();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error de conexión a la base de datos.");
+                ex.printStackTrace();
+            }
+        } else {
+            System.out.println("No se pudo obtener el id_usuario del usuario activo.");
+        }
+    }
 }
