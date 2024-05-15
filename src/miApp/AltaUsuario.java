@@ -9,6 +9,7 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
@@ -118,8 +119,14 @@ public class AltaUsuario extends JFrame {
 	            JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden.");
 	            return;
 	        }else {
-			BaseDatos bbdd= new BaseDatos(); //textField_username.getText(),textField_password.getPassword()
 			try {
+                // Verificar si el usuario ya existe
+                if (existeUsuario(username)) {
+                    JOptionPane.showMessageDialog(this, "Usuario ya registrado. Por favor, elija otro nombre de usuario.");
+                    return;
+                }
+                // Proceder con el registro del usuario
+    			BaseDatos bbdd= new BaseDatos(); 
 		        // Cifrar la contraseña
 		        String contraseñaCifrada = Login.cifrarContraseña(password);
 				if (!bbdd.loginDB(textField_username.getText(),contraseñaCifrada)) {
@@ -159,4 +166,37 @@ public class AltaUsuario extends JFrame {
 		        }
 		}
 	}
+	private boolean existeUsuario(String username) throws SQLException {
+	    boolean existe = false;
+	    Connection conn = null;
+	    PreparedStatement pstmt = null;
+	    ResultSet rs = null;
+
+	    try {
+	        conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/proyectotienda", "root", "");
+	        String sql = "SELECT COUNT(*) FROM usuarios WHERE username = ?";
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setString(1, username);
+	        rs = pstmt.executeQuery();
+
+	        if (rs.next()) {
+	            int count = rs.getInt(1);
+	            existe = count > 0;
+	        }
+	    } finally {
+	        // Cerrar recursos en un bloque finally para garantizar que se cierren adecuadamente
+	        if (rs != null) {
+	            rs.close();
+	        }
+	        if (pstmt != null) {
+	            pstmt.close();
+	        }
+	        if (conn != null) {
+	            conn.close();
+	        }
+	    }
+
+	    return existe;
+	}
+
 }

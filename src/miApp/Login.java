@@ -88,7 +88,8 @@ public class Login extends JFrame { //los métodos están heredados de la clase 
             @Override
             public void mouseClicked(MouseEvent e) {
                 // Aquí puedes llamar al método que quieras ejecutar al hacer clic en el texto
-            	System.out.println("Contraseña recuperada");
+                String mensaje = "No se ha implementado la recuperación de contraseña.\nRegístrese de nuevo.";
+                JOptionPane.showMessageDialog(lblRecuperarPassword, mensaje, "Mensaje", JOptionPane.INFORMATION_MESSAGE);
             }
             public void mouseEntered(MouseEvent e) {
             	lblRecuperarPassword.setForeground(Color.BLUE); // Cambiar color al pasar el ratón
@@ -111,7 +112,7 @@ public class Login extends JFrame { //los métodos están heredados de la clase 
 		miPanel.add(btnLogin);
 		
 		
-		JLabel lblRegistrarse = new JLabel("¿No tienes cuenta? Registrate");
+		JLabel lblRegistrarse = new JLabel("¿No tienes cuenta? Regístrate.");
 		lblRegistrarse.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblRegistrarse.setBounds(148, 288, 234, 23);
 		miPanel.add(lblRegistrarse);
