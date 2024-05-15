@@ -1,5 +1,6 @@
 package miApp;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -7,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.JButton;
@@ -87,7 +89,12 @@ public class Login extends JFrame { //los métodos están heredados de la clase 
             public void mouseClicked(MouseEvent e) {
                 // Aquí puedes llamar al método que quieras ejecutar al hacer clic en el texto
             	System.out.println("Contraseña recuperada");
-         //       abrirRecuperarPassword();
+            }
+            public void mouseEntered(MouseEvent e) {
+            	lblRecuperarPassword.setForeground(Color.BLUE); // Cambiar color al pasar el ratón
+            }
+            public void mouseExited(MouseEvent e) {
+            	lblRecuperarPassword.setForeground(Color.BLACK); // Restaurar color al salir del texto
             }
         });
 		
@@ -103,8 +110,6 @@ public class Login extends JFrame { //los métodos están heredados de la clase 
 		btnLogin.setBounds(214, 211, 100, 23);
 		miPanel.add(btnLogin);
 		
-//		textField_password.getPassword();
-		
 		
 		JLabel lblRegistrarse = new JLabel("¿No tienes cuenta? Registrate");
 		lblRegistrarse.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -119,7 +124,12 @@ public class Login extends JFrame { //los métodos están heredados de la clase 
                 AltaUsuario ventanaRegistro = new AltaUsuario(textField_username.getText());
                 dispose(); //borra la ventan de Login
                 ventanaRegistro.setVisible(true);
-         //       abrirRecuperarPassword();
+            }
+            public void mouseEntered(MouseEvent e) {
+            	lblRegistrarse.setForeground(Color.BLUE); // Cambiar color al pasar el ratón
+            }
+            public void mouseExited(MouseEvent e) {
+            	lblRegistrarse.setForeground(Color.BLACK); // Restaurar color al salir del texto
             }
         });
 	}
@@ -142,6 +152,8 @@ public class Login extends JFrame { //los métodos están heredados de la clase 
 					this.setVisible(false);
 				}else {
 					System.out.println("Su nombre de usuario o contraseña es incorrecto");
+		            JOptionPane.showMessageDialog(this, "Su nombre de usuario o contraseña es incorrecto.");
+		            return;
 				}
 			} catch (NoSuchAlgorithmException e) {
 				// TODO Auto-generated catch block
@@ -150,14 +162,11 @@ public class Login extends JFrame { //los métodos están heredados de la clase 
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-//			bbdd.cerrarBD();
+
 		}
 	}
     public static String cifrarContraseña(String contraseña) throws NoSuchAlgorithmException {
-	//        // Generar una sal aleatoria
-	//        SecureRandom random = new SecureRandom();
-	//        byte[] salt = new byte[16];
-	//        random.nextBytes(salt);
+
             // Cadena fija para la sal
             byte[] salt = "EstoEsUnaSalFija".getBytes();
 
@@ -170,9 +179,7 @@ public class Login extends JFrame { //los métodos están heredados de la clase 
 
             // Convertir el hash y la sal a base64 para almacenarlos en la base de datos
             String contraseñaCifrada = Base64.getEncoder().encodeToString(hash);
- //           String salBase64 = Base64.getEncoder().encodeToString(salt);
- //           String resultado= contraseñaCifrada;
-            //+ ":" + salBase64;
+
             // Formato para almacenar en la base de datos: hash:sal
             return contraseñaCifrada;
         }

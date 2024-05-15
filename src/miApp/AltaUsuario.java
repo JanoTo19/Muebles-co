@@ -30,6 +30,7 @@ public class AltaUsuario extends JFrame {
 	private final Font miFont = new Font("Tahoma", Font.PLAIN, 20);
 	private JPasswordField passwordField;
     private JPanel mainPanel;
+    private JButton btnLogin;
     
 	public AltaUsuario(String nombreUsuario) {
 		//pROPIEDADES DEL MARCO
@@ -52,7 +53,12 @@ public class AltaUsuario extends JFrame {
         
         		//Botón de registro con la contraseña y usuario - ver apuntes de actionlistener y demás opciones
         		JButton btnRegistro = new JButton("Registrarse");
-        		btnRegistro.setBounds(269, 176, 131, 33);
+        		btnRegistro.addActionListener(new ActionListener() {
+        			public void actionPerformed(ActionEvent e) {
+        				altaUsuario();
+        			}
+        		});
+        		btnRegistro.setBounds(250, 176, 150, 33);
         		mainPanel.add(btnRegistro);
         		btnRegistro.setFont(miFont);
         		
@@ -88,10 +94,16 @@ public class AltaUsuario extends JFrame {
         		lblUsername.setBounds(88, 37, 116, 30);
         		mainPanel.add(lblUsername);
         		lblUsername.setFont(miFont);
-        		btnRegistro.addActionListener(new ActionListener() {
+        		
+        		btnLogin = new JButton("Login");
+        		btnLogin.setFont(new Font("Tahoma", Font.PLAIN, 20));
+        		btnLogin.setBounds(73, 176, 131, 33);
+        		mainPanel.add(btnLogin);
+        		btnLogin.addActionListener(new ActionListener() {
         			public void actionPerformed(ActionEvent e) {
-        				//Acción al pulsar el botón
-        				altaUsuario();
+                        Login ventanaLogin = new Login();
+                        dispose(); //borra la ventana de altaUsuario
+                        ventanaLogin.setVisible(true);
         			}
         		});
 		
@@ -131,7 +143,7 @@ public class AltaUsuario extends JFrame {
 				        }
 				}else {
 					System.out.println("No se puede registrar");
-		            JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos.");
+		            JOptionPane.showMessageDialog(this, "Usuario ya registrado. Vaya al Login.");
 		            return;
 				}
 				
