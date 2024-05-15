@@ -17,6 +17,8 @@ import javax.swing.table.TableModel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollBar;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Aplication {
 
@@ -74,6 +76,12 @@ public class Aplication {
 		frame.getContentPane().add(btnMostrarProductos);
 		
 		table = new JTable();
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+			}
+		});
 		table.repaint();
 		table.setModel(new DefaultTableModel(
 			new String[][] {
