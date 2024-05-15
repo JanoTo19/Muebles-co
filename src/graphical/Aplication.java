@@ -12,8 +12,11 @@ import javax.swing.border.BevelBorder;
 import java.awt.Color;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JScrollBar;
 
 public class Aplication {
 
@@ -47,6 +50,7 @@ public class Aplication {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		Test_table m=new Test_table();
 		String tiempo="";
 		frame = new JFrame();
 		frame.setBounds(100, 100, 730, 548);
@@ -61,15 +65,6 @@ public class Aplication {
 		btnNewButton.setBounds(56, 39, 123, 45);
 		frame.getContentPane().add(btnNewButton);
 		
-		JButton btnAadir = new JButton("Añadir");
-		btnAadir.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnAadir.setToolTipText("Añadir");
-		btnAadir.setBounds(235, 39, 123, 45);
-		frame.getContentPane().add(btnAadir);
-		
 		JButton btnMostrarProductos = new JButton("Mostrar productos");
 		btnMostrarProductos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -79,35 +74,64 @@ public class Aplication {
 		frame.getContentPane().add(btnMostrarProductos);
 		
 		table = new JTable();
+		table.repaint();
 		table.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, ratata(), null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
-				{null, null, null, null},
+			new String[][] {
+				{m.geta(),m.getb()},
+				{null, null},
+				{null, null},
+				{null, null},
+				{null, null},
+				{null, null},
+				{null, null},
+				{null, null},
+				{null, null},
+				{null, null},
+				{null, null},
+				{null, null},
+				{null, null},
+				{null, null},
+				{null, null},
 			},
 			new String[] {
-				"New column", "New column", "New column", "New column"
+				"New column", "New column"
 			}
 		));
-		table.setBounds(66, 147, 550, 273);
+		table.setBounds(77, 156, 571, 255);
 		frame.getContentPane().add(table);
+		
+		JButton btnAadir = new JButton("Añadir");
+		btnAadir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Test(table);
+			}
+		});
+		btnAadir.setToolTipText("Añadir");
+		btnAadir.setBounds(235, 39, 123, 45);
+		frame.getContentPane().add(btnAadir);
 		
 
 	 
 	        
-	}public String ratata() {
-		return "b";
-	}
+	}void Test(JTable table){
+		DefaultTableModel model = (DefaultTableModel) table.getModel();
+        
+        String[] cols = {"Id","First Name","Last Name","Age"};
+        String[][] data = { 
+                            {"1", "FN1","LN1","10"},
+                            {"2", "FN1","LN1","15"},
+                            {"3", "FN1","LN1","20"},
+                            {"4", "FN1","LN1","25"},
+                            {"5", "FN1","LN1","30"},
+                            {"6", "FN1","LN1","35"},
+                            {"7", "FN1","LN1","40"},
+                            {"8", "FN1","LN1","45"},
+                            {"9", "FN1","LN1","50"},
+                            {"10", "FN1","LN1","60"}
+                          };
+        
+        model.setDataVector(data, cols);
+        
+        
+    }
 }
