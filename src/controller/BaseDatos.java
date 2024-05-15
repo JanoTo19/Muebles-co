@@ -29,7 +29,7 @@ public class BaseDatos {
 				conn = DriverManager.getConnection(properties.getProperty("jdbc") + properties.getProperty("BBDD"), properties.getProperty("USER"), properties.getProperty("PASS"));
 			}
 		} catch (IOException e) {
-			// TODO: handle exception
+			JOptionPane.showMessageDialog(null, "Error no se puede leer el archivo", "Error!!", JOptionPane.ERROR_MESSAGE);
 		}
 		return conn;
 	}
