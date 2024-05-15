@@ -102,11 +102,12 @@ public class BaseDatos {
             pstmt.setInt(4, cantidad);
             pstmt.setDouble(5, precio);
             pstmt.executeUpdate();
-            System.out.println("Producto registrado correctamente.");
+            JOptionPane.showMessageDialog(null, "Producto registrado correctamente.");
         } catch (SQLException e) {
-            System.out.println("Error al insertar el producto en la base de datos.");
-            e.printStackTrace();
-        }
+            JOptionPane.showMessageDialog(null, "Error al insertar el producto en la base de datos.");
+        } catch (NumberFormatException e) {
+        	JOptionPane.showMessageDialog(null, "Error al parsear un numero.");
+		}
     }
 
     public void recuperarUser(String user) {

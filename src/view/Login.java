@@ -156,15 +156,11 @@ public class Login extends JFrame {
 	private void accederApp() {
 
 		String password = new String(textField_password.getPassword());
-		System.out.println("Password: " + password);
 		if (!(textField_username.getText().isBlank() || password.isBlank())) {
 			BaseDatos bbdd = new BaseDatos(); // textField_username.getText(),textField_password.getPassword()
 			try {
 				String contraseñaCifrada = Cifrado.encriptar(password);
-				System.out.println("Contraseña login cifrada: " + contraseñaCifrada);
-				System.out.println("contrasea cifrada en login: " + contraseñaCifrada);
 				if (bbdd.loginDB(textField_username.getText(), contraseñaCifrada)) {
-					System.out.println("Todo ok");
 					MenuPrincipal ventanaPrincipal = new MenuPrincipal(textField_username.getText());
 					// Mostrar la ventana principal
 					ventanaPrincipal.setVisible(true);

@@ -31,6 +31,11 @@ public class AltaProducto extends JFrame {
 		inicializarComponentes();
 		agregarAcciones();
 	}
+	
+	public static void main(String[] args) {
+		AltaProducto a = new AltaProducto();
+		a.setVisible(true);
+	}
 
 	private void inicializarComponentes() {
 		// Contenedor del frame
@@ -129,6 +134,9 @@ public class AltaProducto extends JFrame {
 				int cantidad = Integer.parseInt(textField_cantidad.getText());
 				double precio = Double.parseDouble(textField_precio.getText());
 				BaseDatos.altaProducto(nombre, tipo, gama, cantidad, precio);
+				MenuPrincipal mPrincipal = new MenuPrincipal(nombre);
+				mPrincipal.setVisible(true);
+				dispose();
 			}
 		});
 	}

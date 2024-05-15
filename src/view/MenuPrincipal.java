@@ -24,7 +24,7 @@ public class MenuPrincipal extends JFrame {
 	private JPanel headerPanel;
 	private JPanel mainPanel;
 	private JTable tablaProductos;
-	private JButton btnSalir;
+	private JButton btnSalir, btnAniadir;
 
 	public MenuPrincipal(String nombreUsuario) {
 		inicializarComponentes(nombreUsuario);
@@ -79,6 +79,9 @@ public class MenuPrincipal extends JFrame {
 		// Botón para volver a la pantalla de Login
 		btnSalir = new JButton("Salir");
 		headerPanel.add(btnSalir);
+		
+		btnAniadir = new JButton("Añadir Producto");
+		headerPanel.add(btnAniadir);
 	}
 
 	private void agregarAcciones() {
@@ -87,6 +90,17 @@ public class MenuPrincipal extends JFrame {
 				Login frame = new Login();
 				frame.setVisible(true);
 				dispose();
+			}
+		});
+		
+		btnAniadir.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				AltaProducto aProducto = new AltaProducto();
+				aProducto.setVisible(true);
+				dispose();
+				
 			}
 		});
 	}
