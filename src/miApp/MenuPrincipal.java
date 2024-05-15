@@ -30,6 +30,7 @@ public class MenuPrincipal extends JFrame {
     private JPanel mainPanel;
     private JTable tablaProductos;
     private JButton btnNuevoProducto;
+    private JButton btnNewButton;
 
     public MenuPrincipal(String nombreUsuario) {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -45,7 +46,7 @@ public class MenuPrincipal extends JFrame {
         miPanel.add(headerPanel, BorderLayout.NORTH);
 
         // Etiqueta para mostrar el nombre de usuario
-        JLabel lblNewLabel = new JLabel("Usuario logeado: " + nombreUsuario);
+        JLabel lblNewLabel = new JLabel("Usuario: " + nombreUsuario);
         lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
         headerPanel.add(lblNewLabel);
         
@@ -67,12 +68,20 @@ public class MenuPrincipal extends JFrame {
                 ventanaAltaProducto.setVisible(true);
         	}
         });
+        
+        btnNewButton = new JButton("Ver Usuario");
+        btnNewButton.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		mostrarUsuario(usuarioActivo);
+        	}
+        });
+        headerPanel.add(btnNewButton);
         headerPanel.add(btnNuevoProducto);
         headerPanel.add(btnSalir);
 
         // Crear el panel principal (main)
         mainPanel = new JPanel();
-        mainPanel.setBorder(BorderFactory.createTitledBorder("Resumen"));
+        mainPanel.setBorder(BorderFactory.createTitledBorder("Inventario de Muebles"));
         miPanel.add(mainPanel, BorderLayout.CENTER);
 
         // Crear la tabla de productos
@@ -85,6 +94,7 @@ public class MenuPrincipal extends JFrame {
         // Obtener los datos de la tabla 'productos' de la base de datos
         obtenerProductos(modeloTabla,usuarioActivo);
     }
+
     // Método para obtener los productos de la base de datos
     private void obtenerProductos(DefaultTableModel modeloTabla, String usuarioActivo) {
         try {
@@ -127,5 +137,71 @@ public class MenuPrincipal extends JFrame {
             e.printStackTrace();
         }
     }
+    // Método para mostrar los usuarios en la tabla de productos
+    private void mostrarUsuario(String usuarioActivo) {
+        DefaultTableModel modeloTabla = (DefaultTableModel) tablaProductos.getModel();
+        modeloTabla.setRowCount(0); // Limpiar la tabla
+        
+        try (Connection conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/proyectotienda", "root", "")) {
+            String sql = "SELECT id_usuario, username, telefono FROM usuarios";
+            try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+                while (rs.next()) {
+                    int id_usuario = rs.getInt("id_usuario");
+                    String nombre = rs.getString("username");
+                    int telefono = rs.getInt("telefono");
+                    Object[] fila = {id_usuario, nombre, telefono}; // Vaciar las columnas innecesarias
+                    modeloTabla.addRow(fila);
+                }
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Error al obtener los datos de los usuarios.");
+                ex.printStackTrace();
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error de conexión a la base de datos.");
+            ex.printStackTrace();
+        }
+        // Remover el panel principal actual y agregar uno nuevo con la tabla de usuarios
+        miPanel.remove(mainPanel);
+        
+        // Crear el panel para mostrar los usuarios
+        JPanel mainPanelUsuario = new JPanel();
+        mainPanelUsuario.setBorder(BorderFactory.createTitledBorder("Datos del Usuario Activo"));
+        miPanel.add(mainPanelUsuario, BorderLayout.CENTER);
+        
+        // Crear la tabla de usuarios
+        String[] columnasUsuarios = {"ID Usuario", "Nombre", "Teléfono"};
+        DefaultTableModel modeloTablaUsuarios = new DefaultTableModel(columnasUsuarios, 0);
+        JTable tablaUsuarios = new JTable(modeloTablaUsuarios);
+        JScrollPane scrollPaneUsuarios = new JScrollPane(tablaUsuarios);
+        mainPanelUsuario.add(scrollPaneUsuarios);
+        
+        // Obtener y mostrar los usuarios
+        obtenerUsuarios(modeloTablaUsuarios,usuarioActivo);
 
+        // Refrescar la interfaz
+        miPanel.revalidate();
+        miPanel.repaint();
+    }
+
+    // Método para obtener y mostrar el usuario activo en la tabla
+    private void obtenerUsuarios(DefaultTableModel modeloTablaUsuarios, String usuarioActivo) {
+        try (Connection conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/proyectotienda", "root", "")) {
+            String sql = "SELECT id_usuario, username, telefono FROM usuarios WHERE username = '"+usuarioActivo+"'";
+            try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+                while (rs.next()) {
+                    int id_usuario = rs.getInt("id_usuario");
+                    String nombre = rs.getString("username");
+                    int telefono = rs.getInt("telefono");
+                    Object[] fila = {id_usuario, nombre, telefono};
+                    modeloTablaUsuarios.addRow(fila);
+                }
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Error al obtener los datos de los usuarios.");
+                ex.printStackTrace();
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error de conexión a la base de datos.");
+            ex.printStackTrace();
+        }
+    }
 }

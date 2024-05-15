@@ -142,6 +142,7 @@ public class Login extends JFrame { //los métodos están heredados de la clase 
 			BaseDatos bbdd= new BaseDatos(); //textField_username.getText(),textField_password.getPassword()
 			try {
 				String contraseñaCifrada=cifrarContraseña(password);
+
 				if (bbdd.loginDB(textField_username.getText(),contraseñaCifrada)) {
 					System.out.println("Todo ok");
 					MenuPrincipal ventanaPrincipal = new MenuPrincipal(textField_username.getText());
