@@ -31,11 +31,6 @@ public class AltaProducto extends JFrame {
 		inicializarComponentes();
 		agregarAcciones();
 	}
-	
-	public static void main(String[] args) {
-		AltaProducto a = new AltaProducto();
-		a.setVisible(true);
-	}
 
 	private void inicializarComponentes() {
 		// Contenedor del frame
