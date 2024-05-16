@@ -3,6 +3,8 @@ package miApp;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -123,40 +125,63 @@ public class MenuPrincipal extends JFrame {
         comboBoxTiposListado.addItem("Cantidades");
         comboBoxTiposListado.addItem("Precios");
 
-        btnSalir.addActionListener(e -> {
-            Login frame = new Login();
-            frame.setVisible(true);
-            dispose();
-        });
+        btnSalir.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Login frame = new Login();
+	            frame.setVisible(true);
+	            dispose();
+			}
+		});
+        
+        btnNuevoProducto.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				AltaProducto ventanaAltaProducto = new AltaProducto(usuarioActivo);
+	            dispose(); // borra la ventana actual
+	            ventanaAltaProducto.setVisible(true);
+			}
+		});
 
-        btnNuevoProducto.addActionListener(e -> {
-            AltaProducto ventanaAltaProducto = new AltaProducto(usuarioActivo);
-            dispose(); // borra la ventana actual
-            ventanaAltaProducto.setVisible(true);
-        });
+        btnVerUsuario.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mostrarUsuario(usuarioActivo);
+			}
+		});
 
-        btnVerUsuario.addActionListener(e -> mostrarUsuario(usuarioActivo));
+        btnListado.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String textoIngresado = textField.getText();
+				String tipoListadoSeleccionado = (String) comboBoxTiposListado.getSelectedItem();
+				TipoListado tipoListado = obtenerTipoListadoDesdeString(tipoListadoSeleccionado);
+				obtenerListadoProductos(modeloTabla, tipoListado, textoIngresado);
+			}
+		});
+        
+        btnEliminar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int filaSeleccionada = tablaProductos.getSelectedRow();
+	            if (filaSeleccionada != -1) {
+	                // Obtiene el ID del producto de la fila seleccionada
+	                String idProducto = tablaProductos.getValueAt(filaSeleccionada, 1).toString();
 
-        btnListado.addActionListener(e -> {
-            String textoIngresado = textField.getText();
-            String tipoListadoSeleccionado = (String) comboBoxTiposListado.getSelectedItem();
-            TipoListado tipoListado = obtenerTipoListadoDesdeString(tipoListadoSeleccionado);
-            obtenerListadoProductos(modeloTabla, tipoListado, textoIngresado);
-        });
-
-        btnEliminar.addActionListener(e -> {
-            int filaSeleccionada = tablaProductos.getSelectedRow();
-            if (filaSeleccionada != -1) {
-                // Obtiene el ID del producto de la fila seleccionada
-                String idProducto = tablaProductos.getValueAt(filaSeleccionada, 1).toString();
-
-                // Elimina el producto de la base de datos
-                eliminarProducto(idProducto);
-
-                // Elimina la fila de la tabla
-                ((DefaultTableModel) tablaProductos.getModel()).removeRow(filaSeleccionada);
-            }
-        });
+	                // Elimina el producto de la base de datos
+	                eliminarProducto(idProducto);
+	                
+	                // Elimina la fila de la tabla
+	                ((DefaultTableModel) tablaProductos.getModel()).removeRow(filaSeleccionada);
+	                JOptionPane.showMessageDialog(null, "Producto eliminado exitosamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
+	            }
+			}
+		});
 
         // Obtener los datos de la tabla 'productos' de la base de datos
         obtenerProductos(modeloTabla, usuarioActivo);
@@ -211,7 +236,13 @@ public class MenuPrincipal extends JFrame {
 		// Botón para volver al panel principal
 		btnVolver = new JButton("Volver");
 		userPanel.add(btnVolver, BorderLayout.SOUTH);
-		btnVolver.addActionListener(e -> cardLayout.show(cardPanel, "mainPanel"));
+		btnVolver.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                obtenerProductos(modeloTabla, usuarioActivo);
+                cardLayout.show(cardPanel, "mainPanel");
+            }
+        });
 
 		// Obtener y mostrar los usuarios
 		obtenerUsuarios(modeloTablaUsuarios, usuarioActivo);

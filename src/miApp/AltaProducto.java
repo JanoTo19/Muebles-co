@@ -25,7 +25,6 @@ public class AltaProducto extends JFrame {
     private JPanel miPanel;
     private JTextField textField_nombre;
     private JTextField textField_tipo;
-    private JTextField textField_gama;
     private JTextField textField_cantidad;
     private JTextField textField_precio;
     private final Font miFont = new Font("Tahoma", Font.PLAIN, 20);
