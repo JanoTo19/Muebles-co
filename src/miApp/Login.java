@@ -100,16 +100,20 @@ public class Login extends JFrame { //los métodos están heredados de la clase 
         });
 		
 		//Botón de acceso con la contraseña y usuario - ver apuntes de actionlistener y demás opciones
-		JButton btnLogin = new JButton("LOGIN");
-		btnLogin.setFont(miFont);
-		btnLogin.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//Acción al pulsar el botón
-				accederApp();
-			}
-		});
-		btnLogin.setBounds(214, 211, 100, 23);
-		miPanel.add(btnLogin);
+        JButton btnLogin = new JButton("LOGIN");
+        btnLogin.setFont(miFont);
+        btnLogin.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                //Acción al pulsar el botón
+                accederApp();
+            }
+        });
+        btnLogin.setBounds(214, 211, 100, 23);
+        miPanel.add(btnLogin);
+
+        // Configurar el botón de login como el botón predeterminado para que se active al presionar "Enter"
+        getRootPane().setDefaultButton(btnLogin);
+
 		
 		
 		JLabel lblRegistrarse = new JLabel("¿No tienes cuenta? Regístrate.");

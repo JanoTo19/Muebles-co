@@ -38,11 +38,16 @@ public class MenuPrincipal extends JFrame {
     private JButton btnNewButton_1;
     private JTextField textField;
     private JLabel lblNewLabel_2;
+    private JTextField textOperacion;
+    private JButton btnNewButton_3_2;
 
 
     public MenuPrincipal(String nombreUsuario) {
+        // Establecer la configuración básica del JFrame
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 800, 600);
+
+        // Crear el panel principal
         miPanel = new JPanel();
         miPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         miPanel.setLayout(new BorderLayout());
@@ -72,20 +77,18 @@ public class MenuPrincipal extends JFrame {
         btnNuevoProducto.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
                 AltaProducto ventanaAltaProducto = new AltaProducto(usuarioActivo);
-                dispose(); //borra la ventan de Login
+                dispose(); // Cierra la ventana actual
                 ventanaAltaProducto.setVisible(true);
         	}
         });
 
-        
+        // Botón para ver información del usuario
         btnNewButton = new JButton("Ver Usuario");
         btnNewButton.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		mostrarUsuario(usuarioActivo);
         	}
         });
-        
-
 
         // Crear el panel principal (main)
         mainPanel = new JPanel();
@@ -100,17 +103,19 @@ public class MenuPrincipal extends JFrame {
         JScrollPane scrollPane = new JScrollPane(tablaProductos);
         scrollPane.setBounds(10, 22, 452, 427);
         mainPanel.add(scrollPane);
-        
+
+        // Botón de listado
         btnNewButton_1 = new JButton("Listado");
-        btnNewButton_1.setBounds(680, 94, 86, 23);
+        btnNewButton_1.setBounds(670, 94, 96, 23);
         mainPanel.add(btnNewButton_1);
         
+        // Otros componentes para filtrar los listados
         comboBoxTiposListado = new JComboBox<>();
-        comboBoxTiposListado.setBounds(482, 94, 89, 22);
+        comboBoxTiposListado.setBounds(472, 94, 89, 22);
         mainPanel.add(comboBoxTiposListado);
         
         textField = new JTextField();
-        textField.setBounds(581, 94, 89, 23);
+        textField.setBounds(571, 94, 89, 23);
         mainPanel.add(textField);
         textField.setColumns(10);
         
@@ -118,15 +123,59 @@ public class MenuPrincipal extends JFrame {
         lblNewLabel_1.setBounds(472, 29, 280, 14);
         mainPanel.add(lblNewLabel_1);
         
-        lblNewLabel_2 = new JLabel("Indique =,<,> Ejemplo: [>100] o [='mueble']");
+        lblNewLabel_2 = new JLabel("Indique =,<,> Ejemplo: [>100] o [mueble]");
         lblNewLabel_2.setBounds(472, 64, 280, 14);
         mainPanel.add(lblNewLabel_2);
+
+        // Botones adicionales
+        JButton btnNewButton_3 = new JButton("Eliminar Id");
+        btnNewButton_3.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		Metodos metodos = new Metodos();
+        		metodos.eliminarProductoPorID(textField.getText());
+        	}
+        });
+        btnNewButton_3.setBounds(670, 128, 98, 23);
+        mainPanel.add(btnNewButton_3);
+        
+        JButton btnNewButton_3_1 = new JButton("Restar");
+        btnNewButton_3_1.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		Metodos metodos = new Metodos();
+        		String operacion="-";
+        		metodos.modificarCantidadProducto(Integer.parseInt(textField.getText()), 
+        				Integer.parseInt(textOperacion.getText()), operacion);
+        	}
+        });
+        btnNewButton_3_1.setBounds(670, 162, 98, 23);
+        mainPanel.add(btnNewButton_3_1);
+        
+        textOperacion = new JTextField();
+        textOperacion.setColumns(10);
+        textOperacion.setBounds(571, 163, 89, 23);
+        mainPanel.add(textOperacion);
+        
+        btnNewButton_3_2 = new JButton("Sumar");
+        btnNewButton_3_2.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		Metodos metodos = new Metodos();
+        		String operacion="+";
+        		metodos.modificarCantidadProducto(Integer.parseInt(textField.getText()), 
+        				Integer.parseInt(textOperacion.getText()), operacion);
+        	}
+        });
+        btnNewButton_3_2.setBounds(472, 162, 89, 23);
+        mainPanel.add(btnNewButton_3_2);
+
+        // Combo box para seleccionar el tipo de listado
         comboBoxTiposListado.addItem("ID");
         comboBoxTiposListado.addItem("Nombre");
         comboBoxTiposListado.addItem("Tipo");
         comboBoxTiposListado.addItem("Gama");
         comboBoxTiposListado.addItem("Cantidades");
         comboBoxTiposListado.addItem("Precios");
+
+        // Acción del botón de listado
         btnNewButton_1.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		String textoIngresado = textField.getText();
@@ -135,6 +184,17 @@ public class MenuPrincipal extends JFrame {
                 obtenerListadoProductos(modeloTabla, tipoListado, textoIngresado);
         	}
         });
+
+        // Botón para cambiar al panel de listados
+        JButton btnNewButton_2 = new JButton("Listados");
+        btnNewButton_2.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+                MenuPrincipal ventanaMenuPrincipal = new MenuPrincipal(usuarioActivo);
+                dispose(); // Cierra la ventana anterior
+                ventanaMenuPrincipal.setVisible(true);
+        	}
+        });
+        headerPanel.add(btnNewButton_2);
         headerPanel.add(btnNewButton);
         headerPanel.add(btnNuevoProducto);
         headerPanel.add(btnSalir);
@@ -143,7 +203,7 @@ public class MenuPrincipal extends JFrame {
         obtenerProductos(modeloTabla,usuarioActivo);
     }
 
-    // Método para obtener los productos de la base de datos
+ // Método para obtener los productos de la base de datos del usuario activo
     private void obtenerProductos(DefaultTableModel modeloTabla, String usuarioActivo) {
         try {
             // Establecer la conexión con la base de datos
@@ -164,13 +224,18 @@ public class MenuPrincipal extends JFrame {
 
             // Llenar la tabla con los datos de los productos
             while (rs.next()) {
+                // Obtener los datos de cada producto
                 String id = rs.getString("id");
                 String nombre = rs.getString("nombre");
                 String tipo = rs.getString("tipo");
                 String gama = rs.getString("gama");
                 int cantidad = rs.getInt("cantidad");
                 double precio = rs.getDouble("precio");
+                
+                // Crear una fila con los datos del producto
                 Object[] fila = {id_usuario, id, nombre, tipo, gama, cantidad, precio};
+                
+                // Agregar la fila a la tabla
                 modeloTabla.addRow(fila);
             }
 
@@ -181,30 +246,41 @@ public class MenuPrincipal extends JFrame {
             idStmt.close();
             conn.close();
         } catch (SQLException e) {
+            // Mostrar mensaje de error en caso de excepción
             JOptionPane.showMessageDialog(null, "Error al obtener los datos de la base de datos.");
             e.printStackTrace();
         }
     }
-    // Método para mostrar los usuarios en la tabla de productos
+
+ // Método para mostrar los usuarios en la tabla de productos
     private void mostrarUsuario(String usuarioActivo) {
+        // Obtener el modelo de la tabla de productos
         DefaultTableModel modeloTabla = (DefaultTableModel) tablaProductos.getModel();
-        modeloTabla.setRowCount(0); // Limpiar la tabla
+        // Limpiar la tabla de productos
+        modeloTabla.setRowCount(0); 
         
         try (Connection conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/proyectotienda", "root", "")) {
+            // Consulta SQL para obtener los usuarios
             String sql = "SELECT id_usuario, username, telefono FROM usuarios";
             try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+                // Iterar sobre los resultados de la consulta
                 while (rs.next()) {
+                    // Obtener los datos de cada usuario
                     int id_usuario = rs.getInt("id_usuario");
                     String nombre = rs.getString("username");
                     int telefono = rs.getInt("telefono");
-                    Object[] fila = {id_usuario, nombre, telefono}; // Vaciar las columnas innecesarias
+                    // Crear una fila con los datos del usuario
+                    Object[] fila = {id_usuario, nombre, telefono};
+                    // Agregar la fila a la tabla de productos
                     modeloTabla.addRow(fila);
                 }
             } catch (SQLException ex) {
+                // Mostrar mensaje de error en caso de excepción
                 JOptionPane.showMessageDialog(null, "Error al obtener los datos de los usuarios.");
                 ex.printStackTrace();
             }
         } catch (SQLException ex) {
+            // Mostrar mensaje de error en caso de excepción
             JOptionPane.showMessageDialog(null, "Error de conexión a la base de datos.");
             ex.printStackTrace();
         }
@@ -231,28 +307,36 @@ public class MenuPrincipal extends JFrame {
         miPanel.repaint();
     }
 
-    // Método para obtener y mostrar el usuario activo en la tabla
+ // Método para obtener y mostrar el usuario activo en la tabla
     private void obtenerUsuarios(DefaultTableModel modeloTablaUsuarios, String usuarioActivo) {
         try (Connection conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/proyectotienda", "root", "")) {
+            // Consulta SQL para obtener los datos del usuario activo
             String sql = "SELECT id_usuario, username, telefono FROM usuarios WHERE username = '"+usuarioActivo+"'";
             try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+                // Iterar sobre los resultados de la consulta
                 while (rs.next()) {
+                    // Obtener los datos del usuario
                     int id_usuario = rs.getInt("id_usuario");
                     String nombre = rs.getString("username");
                     int telefono = rs.getInt("telefono");
+                    // Crear una fila con los datos del usuario
                     Object[] fila = {id_usuario, nombre, telefono};
+                    // Agregar la fila al modelo de la tabla de usuarios
                     modeloTablaUsuarios.addRow(fila);
                 }
             } catch (SQLException ex) {
+                // Mostrar mensaje de error en caso de excepción
                 JOptionPane.showMessageDialog(null, "Error al obtener los datos de los usuarios.");
                 ex.printStackTrace();
             }
         } catch (SQLException ex) {
+            // Mostrar mensaje de error en caso de excepción
             JOptionPane.showMessageDialog(null, "Error de conexión a la base de datos.");
             ex.printStackTrace();
         }
     }
-    // Enumeración para los tipos de listados
+
+ // Enumeración para los tipos de listados
     public enum TipoListado {
         ID, NOMBRE, TIPO, GAMA, CANTIDADES, PRECIOS
     }
@@ -262,8 +346,10 @@ public class MenuPrincipal extends JFrame {
         modeloTabla.setRowCount(0); // Limpiar la tabla antes de llenarla nuevamente
 
         try (Connection conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/proyectotienda", "root", "")) {
+            // Construir la consulta SQL según el tipo de listado seleccionado
             String sql = construirConsultaSQL(tipoListado, textoIngresado);
             try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+                // Iterar sobre los resultados de la consulta y agregarlos a la tabla
                 while (rs.next()) {
                 	int id_usuario = rs.getInt("id_usuario");
                     String id = rs.getString("id");
@@ -276,7 +362,8 @@ public class MenuPrincipal extends JFrame {
                     modeloTabla.addRow(fila);
                 }
             } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(null, "Error al obtener los datos de los productos.");
+                JOptionPane.showMessageDialog(null, "Error al obtener los datos de los productos. Utilice el formato adecuado.\n"
+                		+ "Indique =,<,> Ejemplo: [>100] o [mueble]");
                 ex.printStackTrace();
             }
         } catch (SQLException ex) {
@@ -292,14 +379,14 @@ public class MenuPrincipal extends JFrame {
                 return "SELECT id_usuario, id, nombre, tipo, gama, cantidad, precio FROM productos where id"+textoIngresado+
                 		" ORDER BY id";
             case NOMBRE:
-                return "SELECT id_usuario, id, nombre, tipo, gama, cantidad, precio FROM productos where nombre"+textoIngresado+
-                		" ORDER BY nombre";
+                return "SELECT id_usuario, id, nombre, tipo, gama, cantidad, precio FROM productos where nombre='"+textoIngresado+
+                		"' ORDER BY nombre";
             case TIPO:
-                return "SELECT id_usuario, id, nombre, tipo, gama, cantidad, precio FROM productos where tipo"+textoIngresado+
-                		" ORDER BY tipo";
+                return "SELECT id_usuario, id, nombre, tipo, gama, cantidad, precio FROM productos where tipo='"+textoIngresado+
+                		"' ORDER BY tipo";
             case GAMA:
-                return "SELECT id_usuario, id, nombre, tipo, gama, cantidad, precio FROM productos where gama"+textoIngresado+
-                		" ORDER BY gama";
+                return "SELECT id_usuario, id, nombre, tipo, gama, cantidad, precio FROM productos where gama='"+textoIngresado+
+                		"' ORDER BY gama";
             case CANTIDADES:
                 return "SELECT id_usuario, id, nombre, tipo, gama, cantidad, precio FROM productos where cantidad"+textoIngresado+
                 		" ORDER BY cantidad";
@@ -307,9 +394,13 @@ public class MenuPrincipal extends JFrame {
                 return "SELECT id_usuario, id, nombre, tipo, gama, cantidad, precio FROM productos where precio"+textoIngresado+
                 		" ORDER BY precio";
             default:
-                throw new IllegalArgumentException("Tipo de listado no válido.");
+            	// Si el tipo de listado no es válido, mostramos un mensaje de error en una ventana emergente
+                JOptionPane.showMessageDialog(null, "Tipo de listado no válido: " + tipoListado, "Error", JOptionPane.ERROR_MESSAGE);
+                throw new IllegalArgumentException("Tipo de listado no válido: " + tipoListado);
         }
     }
+
+    // Método para convertir un string en un tipo de listado
     private TipoListado obtenerTipoListadoDesdeString(String tipoListadoSeleccionado) {
         switch (tipoListadoSeleccionado) {
             case "ID":
