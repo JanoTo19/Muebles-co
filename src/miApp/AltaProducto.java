@@ -32,11 +32,6 @@ public class AltaProducto extends JFrame {
     private JPanel mainPanel;
     private JComboBox<String> comboBoxTiposGama;
     
-    public static void main(String[] args) {
-		AltaProducto a = new AltaProducto("Jano");
-		a.setVisible(true);
-	}
-    
     public AltaProducto(String usuarioActivo) {
     	// Contenedor del frame
         miPanel = new JPanel();
