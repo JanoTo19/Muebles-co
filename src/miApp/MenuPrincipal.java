@@ -14,6 +14,8 @@ import java.awt.Font;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -21,6 +23,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.awt.event.ActionEvent;
+import javax.swing.JTextField;
 
 public class MenuPrincipal extends JFrame {
 
@@ -31,6 +34,11 @@ public class MenuPrincipal extends JFrame {
     private JTable tablaProductos;
     private JButton btnNuevoProducto;
     private JButton btnNewButton;
+    private JComboBox<String> comboBoxTiposListado;
+    private JButton btnNewButton_1;
+    private JTextField textField;
+    private JLabel lblNewLabel_2;
+
 
     public MenuPrincipal(String nombreUsuario) {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -42,7 +50,7 @@ public class MenuPrincipal extends JFrame {
 
         // Crear el panel del encabezado (header)
         headerPanel = new JPanel();
-        headerPanel.setBorder(BorderFactory.createTitledBorder("Usuario"));
+        headerPanel.setBorder(BorderFactory.createTitledBorder("Menu Usuario"));
         miPanel.add(headerPanel, BorderLayout.NORTH);
 
         // Etiqueta para mostrar el nombre de usuario
@@ -68,6 +76,7 @@ public class MenuPrincipal extends JFrame {
                 ventanaAltaProducto.setVisible(true);
         	}
         });
+
         
         btnNewButton = new JButton("Ver Usuario");
         btnNewButton.addActionListener(new ActionListener() {
@@ -75,9 +84,8 @@ public class MenuPrincipal extends JFrame {
         		mostrarUsuario(usuarioActivo);
         	}
         });
-        headerPanel.add(btnNewButton);
-        headerPanel.add(btnNuevoProducto);
-        headerPanel.add(btnSalir);
+        
+
 
         // Crear el panel principal (main)
         mainPanel = new JPanel();
@@ -87,10 +95,50 @@ public class MenuPrincipal extends JFrame {
         // Crear la tabla de productos
         String[] columnas = {"Usuario", "Id", "Nombre", "Tipo", "Gama", "Cantidad", "Precio"};
         DefaultTableModel modeloTabla = new DefaultTableModel(columnas, 0);
+        mainPanel.setLayout(null);
         tablaProductos = new JTable(modeloTabla);
         JScrollPane scrollPane = new JScrollPane(tablaProductos);
+        scrollPane.setBounds(10, 22, 452, 427);
         mainPanel.add(scrollPane);
-
+        
+        btnNewButton_1 = new JButton("Listado");
+        btnNewButton_1.setBounds(680, 94, 86, 23);
+        mainPanel.add(btnNewButton_1);
+        
+        comboBoxTiposListado = new JComboBox<>();
+        comboBoxTiposListado.setBounds(482, 94, 89, 22);
+        mainPanel.add(comboBoxTiposListado);
+        
+        textField = new JTextField();
+        textField.setBounds(581, 94, 89, 23);
+        mainPanel.add(textField);
+        textField.setColumns(10);
+        
+        JLabel lblNewLabel_1 = new JLabel("Seleccione la columna a consultar: ");
+        lblNewLabel_1.setBounds(472, 29, 280, 14);
+        mainPanel.add(lblNewLabel_1);
+        
+        lblNewLabel_2 = new JLabel("Indique =,<,> Ejemplo: [>100] o [='mueble']");
+        lblNewLabel_2.setBounds(472, 64, 280, 14);
+        mainPanel.add(lblNewLabel_2);
+        comboBoxTiposListado.addItem("ID");
+        comboBoxTiposListado.addItem("Nombre");
+        comboBoxTiposListado.addItem("Tipo");
+        comboBoxTiposListado.addItem("Gama");
+        comboBoxTiposListado.addItem("Cantidades");
+        comboBoxTiposListado.addItem("Precios");
+        btnNewButton_1.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		String textoIngresado = textField.getText();
+                String tipoListadoSeleccionado = (String) comboBoxTiposListado.getSelectedItem();
+                TipoListado tipoListado = obtenerTipoListadoDesdeString(tipoListadoSeleccionado);
+                obtenerListadoProductos(modeloTabla, tipoListado, textoIngresado);
+        	}
+        });
+        headerPanel.add(btnNewButton);
+        headerPanel.add(btnNuevoProducto);
+        headerPanel.add(btnSalir);
+        
         // Obtener los datos de la tabla 'productos' de la base de datos
         obtenerProductos(modeloTabla,usuarioActivo);
     }
@@ -202,6 +250,82 @@ public class MenuPrincipal extends JFrame {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error de conexión a la base de datos.");
             ex.printStackTrace();
+        }
+    }
+    // Enumeración para los tipos de listados
+    public enum TipoListado {
+        ID, NOMBRE, TIPO, GAMA, CANTIDADES, PRECIOS
+    }
+
+    // Método para obtener listados de productos desde la base de datos
+    private void obtenerListadoProductos(DefaultTableModel modeloTabla, TipoListado tipoListado,String textoIngresado) {
+        modeloTabla.setRowCount(0); // Limpiar la tabla antes de llenarla nuevamente
+
+        try (Connection conn = DriverManager.getConnection("jdbc:mariadb://localhost:3306/proyectotienda", "root", "")) {
+            String sql = construirConsultaSQL(tipoListado, textoIngresado);
+            try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+                while (rs.next()) {
+                	int id_usuario = rs.getInt("id_usuario");
+                    String id = rs.getString("id");
+                    String nombre = rs.getString("nombre");
+                    String tipo = rs.getString("tipo");
+                    String gama = rs.getString("gama");
+                    int cantidad = rs.getInt("cantidad");
+                    double precio = rs.getDouble("precio");
+                    Object[] fila = {id_usuario, id, nombre, tipo, gama, cantidad, precio}; // Vaciar las columnas innecesarias
+                    modeloTabla.addRow(fila);
+                }
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Error al obtener los datos de los productos.");
+                ex.printStackTrace();
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error de conexión a la base de datos.");
+            ex.printStackTrace();
+        }
+    }
+
+    // Método para construir la consulta SQL según el tipo de listado seleccionado
+    private String construirConsultaSQL(TipoListado tipoListado,String textoIngresado) {
+        switch (tipoListado) {
+            case ID:
+                return "SELECT id_usuario, id, nombre, tipo, gama, cantidad, precio FROM productos where id"+textoIngresado+
+                		" ORDER BY id";
+            case NOMBRE:
+                return "SELECT id_usuario, id, nombre, tipo, gama, cantidad, precio FROM productos where nombre"+textoIngresado+
+                		" ORDER BY nombre";
+            case TIPO:
+                return "SELECT id_usuario, id, nombre, tipo, gama, cantidad, precio FROM productos where tipo"+textoIngresado+
+                		" ORDER BY tipo";
+            case GAMA:
+                return "SELECT id_usuario, id, nombre, tipo, gama, cantidad, precio FROM productos where gama"+textoIngresado+
+                		" ORDER BY gama";
+            case CANTIDADES:
+                return "SELECT id_usuario, id, nombre, tipo, gama, cantidad, precio FROM productos where cantidad"+textoIngresado+
+                		" ORDER BY cantidad";
+            case PRECIOS:
+                return "SELECT id_usuario, id, nombre, tipo, gama, cantidad, precio FROM productos where precio"+textoIngresado+
+                		" ORDER BY precio";
+            default:
+                throw new IllegalArgumentException("Tipo de listado no válido.");
+        }
+    }
+    private TipoListado obtenerTipoListadoDesdeString(String tipoListadoSeleccionado) {
+        switch (tipoListadoSeleccionado) {
+            case "ID":
+                return TipoListado.ID;
+            case "Nombre":
+                return TipoListado.NOMBRE;
+            case "Tipo":
+                return TipoListado.TIPO;
+            case "Gama":
+                return TipoListado.GAMA;
+            case "Cantidades":
+                return TipoListado.CANTIDADES;
+            case "Precios":
+                return TipoListado.PRECIOS;
+            default:
+                throw new IllegalArgumentException("Tipo de listado no válido: " + tipoListadoSeleccionado);
         }
     }
 }
