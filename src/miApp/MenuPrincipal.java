@@ -28,6 +28,11 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+/**
+ * Clase que representa el menú principal de la aplicación.
+ * Extiende JFrame para proporcionar una interfaz gráfica de usuario.
+ * Permite al usuario interactuar con varias funcionalidades del sistema de inventario.
+ */
 public class MenuPrincipal extends JFrame {
 
     private JButton btnNuevoProducto, btnVerUsuario, btnListado, btnSalir, btnEliminar, btnVolver;
@@ -39,12 +44,16 @@ public class MenuPrincipal extends JFrame {
     private JTextField textField;
     private JLabel lblInstruccion;
     private CardLayout cardLayout;
-    
-    public static void main(String[] args) {
-		MenuPrincipal m = new MenuPrincipal("Jano");
-		m.setVisible(true);
-	}
 
+    public static void main(String[] args) {
+        MenuPrincipal m = new MenuPrincipal("Jano");
+        m.setVisible(true);
+    }
+
+    /**
+     * Constructor de la clase MenuPrincipal.
+     * @param nombreUsuario Nombre del usuario activo.
+     */
     public MenuPrincipal(String nombreUsuario) {
 
         String usuarioActivo = nombreUsuario;
@@ -81,11 +90,11 @@ public class MenuPrincipal extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         try {
-			Image img = ImageIO.read(new File("./src/files/Icono-App.png"));
-			setIconImage(img);
-		} catch (IOException e) {
-			e.getMessage();
-		}
+            Image img = ImageIO.read(new File("./src/files/Icono-App.png"));
+            setIconImage(img);
+        } catch (IOException e) {
+            e.getMessage();
+        }
 
         // Etiqueta para mostrar el nombre de usuario
         JLabel lblUsuario = new JLabel("Usuario: " + nombreUsuario);
@@ -150,70 +159,69 @@ public class MenuPrincipal extends JFrame {
         comboBoxTiposBusqueda.addItem("<");
 
         btnSalir.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Login frame = new Login();
-	            frame.setVisible(true);
-	            dispose();
-			}
-		});
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Login frame = new Login();
+                frame.setVisible(true);
+                dispose();
+            }
+        });
         
         btnNuevoProducto.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				AltaProducto ventanaAltaProducto = new AltaProducto(usuarioActivo);
-	            dispose(); // borra la ventana actual
-	            ventanaAltaProducto.setVisible(true);
-			}
-		});
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AltaProducto ventanaAltaProducto = new AltaProducto(usuarioActivo);
+                dispose(); // Cierra la ventana actual
+                ventanaAltaProducto.setVisible(true);
+            }
+        });
 
         btnVerUsuario.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				mostrarUsuario(usuarioActivo);
-			}
-		});
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mostrarUsuario(usuarioActivo);
+            }
+        });
 
         btnListado.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String textoIngresado = textField.getText();
-				String tipoListadoSeleccionado = (String) comboBoxTiposListado.getSelectedItem();
-				TipoListado tipoListado = obtenerTipoListadoDesdeString(tipoListadoSeleccionado);
-				obtenerListadoProductos(modeloTabla, tipoListado, textoIngresado);
-			}
-		});
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String textoIngresado = textField.getText();
+                String tipoListadoSeleccionado = (String) comboBoxTiposListado.getSelectedItem();
+                TipoListado tipoListado = obtenerTipoListadoDesdeString(tipoListadoSeleccionado);
+                obtenerListadoProductos(modeloTabla, tipoListado, textoIngresado);
+            }
+        });
         
         btnEliminar.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				int filaSeleccionada = tablaProductos.getSelectedRow();
-	            if (filaSeleccionada != -1) {
-	                // Obtiene el ID del producto de la fila seleccionada
-	                String idProducto = tablaProductos.getValueAt(filaSeleccionada, 1).toString();
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int filaSeleccionada = tablaProductos.getSelectedRow();
+                if (filaSeleccionada != -1) {
+                    // Obtiene el ID del producto de la fila seleccionada
+                    String idProducto = tablaProductos.getValueAt(filaSeleccionada, 1).toString();
 
-	                // Elimina el producto de la base de datos
-	                eliminarProducto(idProducto);
-	                
-	                // Elimina la fila de la tabla
-	                ((DefaultTableModel) tablaProductos.getModel()).removeRow(filaSeleccionada);
-	                JOptionPane.showMessageDialog(null, "Producto eliminado exitosamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
-	            } else {
-					JOptionPane.showMessageDialog(null, "Ningun producto seleccionado","Error!!",JOptionPane.INFORMATION_MESSAGE);
-				}
-			}
-		});
+                    // Elimina el producto de la base de datos
+                    eliminarProducto(idProducto);
+                    
+                    // Elimina la fila de la tabla
+                    ((DefaultTableModel) tablaProductos.getModel()).removeRow(filaSeleccionada);
+                    JOptionPane.showMessageDialog(null, "Producto eliminado exitosamente", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Ningún producto seleccionado", "Error!!", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+        });
 
         // Obtener los datos de la tabla 'productos' de la base de datos
         obtenerProductos(modeloTabla, usuarioActivo);
     }
 
-    // Método para obtener los productos de la base de datos
+    /**
+     * Método para obtener los productos de la base de datos.
+     * @param modeloTabla El modelo de la tabla donde se mostrarán los productos.
+     * @param usuarioActivo El nombre del usuario activo.
+     */
     private void obtenerProductos(DefaultTableModel modeloTabla, String usuarioActivo) {
         try {
             String id_user_sql = "SELECT id_usuario FROM usuarios WHERE username = '" + usuarioActivo + "'";
@@ -246,23 +254,26 @@ public class MenuPrincipal extends JFrame {
         }
     }
 
-    // Método para mostrar los usuarios en la tabla de productos
+    /**
+     * Método para mostrar los datos del usuario activo en la interfaz.
+     * @param usuarioActivo El nombre del usuario activo.
+     */
     private void mostrarUsuario(String usuarioActivo) {
         // Limpiar la tabla de productos
-		DefaultTableModel modeloTabla = (DefaultTableModel) tablaProductos.getModel();
-		modeloTabla.setRowCount(0);
+        DefaultTableModel modeloTabla = (DefaultTableModel) tablaProductos.getModel();
+        modeloTabla.setRowCount(0);
 
-		// Crear la tabla de usuarios
-		String[] columnasUsuarios = {"ID Usuario", "Nombre", "Teléfono"};
-		DefaultTableModel modeloTablaUsuarios = new DefaultTableModel(columnasUsuarios, 0);
-		tablaUsuarios = new JTable(modeloTablaUsuarios);
-		JScrollPane scrollPaneUsuarios = new JScrollPane(tablaUsuarios);
-		userPanel.add(scrollPaneUsuarios, BorderLayout.CENTER);
+        // Crear la tabla de usuarios
+        String[] columnasUsuarios = {"ID Usuario", "Nombre", "Teléfono"};
+        DefaultTableModel modeloTablaUsuarios = new DefaultTableModel(columnasUsuarios, 0);
+        tablaUsuarios = new JTable(modeloTablaUsuarios);
+        JScrollPane scrollPaneUsuarios = new JScrollPane(tablaUsuarios);
+        userPanel.add(scrollPaneUsuarios, BorderLayout.CENTER);
 
-		// Botón para volver al panel principal
-		btnVolver = new JButton("Volver");
-		userPanel.add(btnVolver, BorderLayout.SOUTH);
-		btnVolver.addActionListener(new ActionListener() {
+        // Botón para volver al panel principal
+        btnVolver = new JButton("Volver");
+        userPanel.add(btnVolver, BorderLayout.SOUTH);
+        btnVolver.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 obtenerProductos(modeloTabla, usuarioActivo);
@@ -270,14 +281,18 @@ public class MenuPrincipal extends JFrame {
             }
         });
 
-		// Obtener y mostrar los usuarios
-		obtenerUsuarios(modeloTablaUsuarios, usuarioActivo);
+        // Obtener y mostrar los usuarios
+        obtenerUsuarios(modeloTablaUsuarios, usuarioActivo);
 
-		// Cambiar al panel de usuario
-		cardLayout.show(cardPanel, "userPanel");
+        // Cambiar al panel de usuario
+        cardLayout.show(cardPanel, "userPanel");
     }
 
-    // Método para obtener y mostrar el usuario activo en la tabla
+    /**
+     * Método para obtener y mostrar los datos del usuario activo en la tabla.
+     * @param modeloTablaUsuarios El modelo de la tabla donde se mostrarán los datos del usuario.
+     * @param usuarioActivo El nombre del usuario activo.
+     */
     private void obtenerUsuarios(DefaultTableModel modeloTablaUsuarios, String usuarioActivo) {
         try {
             String sql = "SELECT id_usuario, username, telefono FROM usuarios WHERE username = '" + usuarioActivo + "'";
@@ -296,12 +311,19 @@ public class MenuPrincipal extends JFrame {
         }
     }
 
-    // Enumeración para los tipos de listados
+    /**
+     * Enumeración para los tipos de listados disponibles.
+     */
     public enum TipoListado {
         ID, NOMBRE, TIPO, GAMA, CANTIDAD, PRECIO
     }
 
-    // Método para obtener listados de productos desde la base de datos
+    /**
+     * Método para obtener listados de productos desde la base de datos según el tipo de listado seleccionado.
+     * @param modeloTabla El modelo de la tabla donde se mostrarán los productos.
+     * @param tipoListado El tipo de listado seleccionado.
+     * @param textoIngresado El texto ingresado para la consulta.
+     */
     private void obtenerListadoProductos(DefaultTableModel modeloTabla, TipoListado tipoListado, String textoIngresado) {
         try {
             modeloTabla.setRowCount(0); // Limpiar la tabla antes de llenarla nuevamente
@@ -326,6 +348,10 @@ public class MenuPrincipal extends JFrame {
         }
     }
 
+    /**
+     * Método para eliminar un producto de la base de datos.
+     * @param idProducto El ID del producto a eliminar.
+     */
     private void eliminarProducto(String idProducto) {
         try (Connection con = BaseDatos.getConnection()) {
             String sql = "DELETE FROM productos WHERE id = ?";
@@ -338,27 +364,37 @@ public class MenuPrincipal extends JFrame {
         }
     }
 
-    // Método para construir la consulta SQL según el tipo de listado seleccionado
+    /**
+     * Método para construir la consulta SQL según el tipo de listado seleccionado y el texto ingresado.
+     * @param tipoListado El tipo de listado seleccionado.
+     * @param textoIngresado El texto ingresado para la consulta.
+     * @return La consulta SQL construida.
+     */
     private String construirConsultaSQL(TipoListado tipoListado, String textoIngresado) {
-    	String simbolo = (String) comboBoxTiposBusqueda.getSelectedItem();
+        String simbolo = (String) comboBoxTiposBusqueda.getSelectedItem();
         switch (tipoListado) {
             case ID:
-                return "SELECT id_usuario, id, nombre, tipo, gama, cantidad, precio FROM productos where id" + simbolo + textoIngresado + " ORDER BY id";
+                return "SELECT id_usuario, id, nombre, tipo, gama, cantidad, precio FROM productos WHERE id" + simbolo + textoIngresado + " ORDER BY id";
             case NOMBRE:
-                return "SELECT id_usuario, id, nombre, tipo, gama, cantidad, precio FROM productos where nombre='" + textoIngresado + "' ORDER BY nombre";
+                return "SELECT id_usuario, id, nombre, tipo, gama, cantidad, precio FROM productos WHERE nombre='" + textoIngresado + "' ORDER BY nombre";
             case TIPO:
-                return "SELECT id_usuario, id, nombre, tipo, gama, cantidad, precio FROM productos where tipo='" + textoIngresado + "' ORDER BY tipo";
+                return "SELECT id_usuario, id, nombre, tipo, gama, cantidad, precio FROM productos WHERE tipo='" + textoIngresado + "' ORDER BY tipo";
             case GAMA:
-                return "SELECT id_usuario, id, nombre, tipo, gama, cantidad, precio FROM productos where gama='" + textoIngresado + "' ORDER BY gama";
+                return "SELECT id_usuario, id, nombre, tipo, gama, cantidad, precio FROM productos WHERE gama='" + textoIngresado + "' ORDER BY gama";
             case CANTIDAD:
-                return "SELECT id_usuario, id, nombre, tipo, gama, cantidad, precio FROM productos where cantidad" + simbolo + textoIngresado + " ORDER BY cantidad";
+                return "SELECT id_usuario, id, nombre, tipo, gama, cantidad, precio FROM productos WHERE cantidad" + simbolo + textoIngresado + " ORDER BY cantidad";
             case PRECIO:
-                return "SELECT id_usuario, id, nombre, tipo, gama, cantidad, precio FROM productos where precio" + simbolo + textoIngresado + " ORDER BY precio";
+                return "SELECT id_usuario, id, nombre, tipo, gama, cantidad, precio FROM productos WHERE precio" + simbolo + textoIngresado + " ORDER BY precio";
             default:
                 throw new IllegalArgumentException("Tipo de listado no válido.");
         }
     }
 
+    /**
+     * Método para obtener el tipo de listado desde el string seleccionado en el comboBox.
+     * @param tipoListadoSeleccionado El string del tipo de listado seleccionado.
+     * @return El tipo de listado correspondiente.
+     */
     private TipoListado obtenerTipoListadoDesdeString(String tipoListadoSeleccionado) {
         switch (tipoListadoSeleccionado) {
             case "ID":
@@ -378,3 +414,4 @@ public class MenuPrincipal extends JFrame {
         }
     }
 }
+
