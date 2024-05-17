@@ -23,6 +23,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+/**
+ * Clase que representa la interfaz gráfica para dar de alta un nuevo producto.
+ * Extiende JFrame para crear una ventana de aplicación.
+ */
 public class AltaProducto extends JFrame {
 
     private static final long serialVersionUID = 1L;
@@ -34,77 +38,82 @@ public class AltaProducto extends JFrame {
     private final Font miFont = new Font("Tahoma", Font.PLAIN, 20);
     private JPanel mainPanel;
     private JComboBox<String> comboBoxTiposGama;
-    
+
+    /**
+     * Constructor de la clase AltaProducto.
+     * Inicializa la interfaz gráfica y sus componentes.
+     *
+     * @param usuarioActivo El nombre del usuario activo que está usando la aplicación.
+     */
     public AltaProducto(String usuarioActivo) {
-    	// Contenedor del frame
+        // Contenedor del frame
         miPanel = new JPanel();
         miPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(miPanel);
         miPanel.setLayout(null);
-    	
-     // Crear el panel principal (main)
+
+        // Crear el panel principal (main)
         mainPanel = new JPanel();
         mainPanel.setBorder(BorderFactory.createTitledBorder("Alta de Producto"));
         mainPanel.setBounds(10, 11, 566, 341);
         miPanel.add(mainPanel);
-		mainPanel.setLayout(null);
-    	
-    	// Propiedades del marco
+        mainPanel.setLayout(null);
+
+        // Propiedades del marco
         setTitle("Alta Producto");
-    	setBounds(100, 100, 600, 400);
-    	
-    	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    	
-    	try {
-			Image img = ImageIO.read(new File("./src/files/Icono-App.png"));
-			setIconImage(img);
-		} catch (IOException e) {
-			e.getMessage();
-		}
-    	
-    	// Etiquetas y campos de texto para ingresar datos del producto
+        setBounds(100, 100, 600, 400);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        try {
+            Image img = ImageIO.read(new File("./src/files/Icono-App.png"));
+            setIconImage(img);
+        } catch (IOException e) {
+            e.getMessage();
+        }
+
+        // Etiquetas y campos de texto para ingresar datos del producto
         JLabel lblNombre = new JLabel("Nombre:");
         lblNombre.setBounds(39, 52, 150, 30);
         mainPanel.add(lblNombre);
         lblNombre.setFont(miFont);
-    	
-    	JLabel lblTipo = new JLabel("Tipo:");
+
+        JLabel lblTipo = new JLabel("Tipo:");
         lblTipo.setBounds(39, 93, 150, 30);
         mainPanel.add(lblTipo);
         lblTipo.setFont(miFont);
-    	
-    	JLabel lblGama = new JLabel("Gama:");
+
+        JLabel lblGama = new JLabel("Gama:");
         lblGama.setBounds(39, 134, 150, 30);
         mainPanel.add(lblGama);
         lblGama.setFont(miFont);
-    	
-    	JLabel lblCantidad = new JLabel("Cantidad:");
+
+        JLabel lblCantidad = new JLabel("Cantidad:");
         lblCantidad.setBounds(39, 175, 150, 30);
         mainPanel.add(lblCantidad);
         lblCantidad.setFont(miFont);
-    	
-    	JLabel lblPrecio = new JLabel("Precio:");
+
+        JLabel lblPrecio = new JLabel("Precio:");
         lblPrecio.setBounds(39, 216, 150, 30);
         mainPanel.add(lblPrecio);
         lblPrecio.setFont(miFont);
-    	
-    	textField_nombre = new JTextField();
+
+        textField_nombre = new JTextField();
         textField_nombre.setBounds(188, 52, 300, 30);
         mainPanel.add(textField_nombre);
         textField_nombre.setFont(miFont);
-    	
-    	textField_tipo = new JTextField();
+
+        textField_tipo = new JTextField();
         textField_tipo.setBounds(188, 93, 300, 30);
         mainPanel.add(textField_tipo);
         textField_tipo.setFont(miFont);
-        
+
         comboBoxTiposGama = new JComboBox<>();
         comboBoxTiposGama.setBounds(188, 134, 300, 30);
         mainPanel.add(comboBoxTiposGama);
         comboBoxTiposGama.addItem("Alta");
         comboBoxTiposGama.addItem("Media");
         comboBoxTiposGama.addItem("Baja");
-        
+
         textField_cantidad = new JTextField();
         textField_cantidad.setBounds(188, 175, 300, 30);
         mainPanel.add(textField_cantidad);
@@ -114,46 +123,55 @@ public class AltaProducto extends JFrame {
         textField_precio.setBounds(188, 216, 300, 30);
         mainPanel.add(textField_precio);
         textField_precio.setFont(miFont);
-        
+
         // Botón para dar de alta el producto
         JButton btnAltaProducto = new JButton("Dar de Alta Producto");
         btnAltaProducto.setBounds(188, 273, 300, 30);
         mainPanel.add(btnAltaProducto);
         btnAltaProducto.setFont(miFont);
-		
-        //Botón para volver al menu principal
+
+        // Botón para volver al menú principal
         JButton btnNewButton = new JButton("Volver");
         btnNewButton.setBounds(39, 273, 89, 30);
         mainPanel.add(btnNewButton);
         btnNewButton.setFont(miFont);
-        
+
+        // Acción del botón para dar de alta el producto
         btnAltaProducto.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	try {
-            		altaProducto(usuarioActivo);
-            	}catch (NumberFormatException ex) {
-            		JOptionPane.showMessageDialog(null, "Error dato invalido. " + ex.getMessage(),"Error!!",JOptionPane.ERROR_MESSAGE);
-				}
+                try {
+                    altaProducto(usuarioActivo);
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Error dato invalido. " + ex.getMessage(), "Error!!", JOptionPane.ERROR_MESSAGE);
+                }
                 AltaProducto ventanaAltaProducto = new AltaProducto(usuarioActivo);
-                dispose(); //borra la ventan de Login
+                dispose(); // Cierra la ventana actual
                 ventanaAltaProducto.setVisible(true);
             }
         });
 
+        // Acción del botón para volver al menú principal
         btnNewButton.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e) {
                 MenuPrincipal ventanaMenuPrincipal = new MenuPrincipal(usuarioActivo);
-                dispose(); //borra la ventan de Login
+                dispose(); // Cierra la ventana actual
                 ventanaMenuPrincipal.setVisible(true);
-        	}
-        });         
+            }
+        });
     }
 
+    /**
+     * Método para dar de alta un producto.
+     * Obtiene los datos del producto desde los campos de texto, los valida y los inserta en la base de datos.
+     *
+     * @param usuarioActivo El nombre del usuario activo que está dando de alta el producto.
+     * @throws NumberFormatException Si los datos numéricos no son válidos.
+     */
     private void altaProducto(String usuarioActivo) throws NumberFormatException {
         // Obtener los datos del producto desde los campos de texto
         String nombre = textField_nombre.getText();
         String tipo = textField_tipo.getText();
-        String gama = (String) comboBoxTiposGama.getSelectedItem();  // Obtener el valor seleccionado del JComboBox
+        String gama = (String) comboBoxTiposGama.getSelectedItem(); // Obtener el valor seleccionado del JComboBox
         int cantidad = Integer.parseInt(textField_cantidad.getText());
         double precio = Double.parseDouble(textField_precio.getText());
 
@@ -163,7 +181,7 @@ public class AltaProducto extends JFrame {
             return;
         }
 
-        try(Connection conn = BaseDatos.getConnection()) {
+        try (Connection conn = BaseDatos.getConnection()) {
             // Obtener el id del usuario activo
             String idUsuarioSql = "SELECT id_usuario FROM usuarios WHERE username = ?";
             int idUsuario;
@@ -209,11 +227,16 @@ public class AltaProducto extends JFrame {
             JOptionPane.showMessageDialog(this, "Error al agregar el producto: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
- // Método para obtener el siguiente ID de producto
+
+    /**
+     * Método para obtener el siguiente ID de producto.
+     * Consulta la base de datos para encontrar el máximo ID actual y devuelve el siguiente ID disponible.
+     *
+     * @return El siguiente ID de producto disponible.
+     */
     private int obtenerSiguienteIdProducto() {
         int siguienteId = 1; // Valor predeterminado si la tabla está vacía
-        try(Connection conn = BaseDatos.getConnection()) {
+        try (Connection conn = BaseDatos.getConnection()) {
             String sql = "SELECT MAX(id) AS max_id FROM productos";
             try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
                 if (rs.next()) {
@@ -229,3 +252,4 @@ public class AltaProducto extends JFrame {
         return siguienteId;
     }
 }
+
