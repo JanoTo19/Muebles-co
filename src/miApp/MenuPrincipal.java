@@ -34,11 +34,16 @@ public class MenuPrincipal extends JFrame {
     private Connection conn = BaseDatos.getConnection();
     private static final long serialVersionUID = 1L;
     private JPanel miPanel, headerPanel, mainPanel, userPanel, cardPanel;
-    private JComboBox<String> comboBoxTiposListado;
+    private JComboBox<String> comboBoxTiposListado, comboBoxTiposBusqueda;
     private JTable tablaProductos, tablaUsuarios;
     private JTextField textField;
     private JLabel lblInstruccion;
     private CardLayout cardLayout;
+    
+    public static void main(String[] args) {
+		MenuPrincipal m = new MenuPrincipal("Jano");
+		m.setVisible(true);
+	}
 
     public MenuPrincipal(String nombreUsuario) {
 
@@ -126,15 +131,23 @@ public class MenuPrincipal extends JFrame {
         mainPanel.add(scrollPane);
 
         comboBoxTiposListado = new JComboBox<>();
-        comboBoxTiposListado.setBounds(482, 94, 89, 22);
+        comboBoxTiposListado.setBounds(463, 94, 63, 22);
         mainPanel.add(comboBoxTiposListado);
 
         comboBoxTiposListado.addItem("ID");
         comboBoxTiposListado.addItem("Nombre");
         comboBoxTiposListado.addItem("Tipo");
         comboBoxTiposListado.addItem("Gama");
-        comboBoxTiposListado.addItem("Cantidades");
-        comboBoxTiposListado.addItem("Precios");
+        comboBoxTiposListado.addItem("Cantidad");
+        comboBoxTiposListado.addItem("Precio");
+        
+        comboBoxTiposBusqueda = new JComboBox<>();
+        comboBoxTiposBusqueda.setBounds(533, 94, 40, 22);
+        mainPanel.add(comboBoxTiposBusqueda);
+        
+        comboBoxTiposBusqueda.addItem("=");
+        comboBoxTiposBusqueda.addItem(">");
+        comboBoxTiposBusqueda.addItem("<");
 
         btnSalir.addActionListener(new ActionListener() {
 			
@@ -285,7 +298,7 @@ public class MenuPrincipal extends JFrame {
 
     // Enumeración para los tipos de listados
     public enum TipoListado {
-        ID, NOMBRE, TIPO, GAMA, CANTIDADES, PRECIOS
+        ID, NOMBRE, TIPO, GAMA, CANTIDAD, PRECIO
     }
 
     // Método para obtener listados de productos desde la base de datos
@@ -327,19 +340,20 @@ public class MenuPrincipal extends JFrame {
 
     // Método para construir la consulta SQL según el tipo de listado seleccionado
     private String construirConsultaSQL(TipoListado tipoListado, String textoIngresado) {
+    	String simbolo = (String) comboBoxTiposBusqueda.getSelectedItem();
         switch (tipoListado) {
             case ID:
-                return "SELECT id_usuario, id, nombre, tipo, gama, cantidad, precio FROM productos where id" + textoIngresado + " ORDER BY id";
+                return "SELECT id_usuario, id, nombre, tipo, gama, cantidad, precio FROM productos where id" + simbolo + textoIngresado + " ORDER BY id";
             case NOMBRE:
                 return "SELECT id_usuario, id, nombre, tipo, gama, cantidad, precio FROM productos where nombre='" + textoIngresado + "' ORDER BY nombre";
             case TIPO:
                 return "SELECT id_usuario, id, nombre, tipo, gama, cantidad, precio FROM productos where tipo='" + textoIngresado + "' ORDER BY tipo";
             case GAMA:
                 return "SELECT id_usuario, id, nombre, tipo, gama, cantidad, precio FROM productos where gama='" + textoIngresado + "' ORDER BY gama";
-            case CANTIDADES:
-                return "SELECT id_usuario, id, nombre, tipo, gama, cantidad, precio FROM productos where cantidad" + textoIngresado + " ORDER BY cantidad";
-            case PRECIOS:
-                return "SELECT id_usuario, id, nombre, tipo, gama, cantidad, precio FROM productos where precio" + textoIngresado + " ORDER BY precio";
+            case CANTIDAD:
+                return "SELECT id_usuario, id, nombre, tipo, gama, cantidad, precio FROM productos where cantidad" + simbolo + textoIngresado + " ORDER BY cantidad";
+            case PRECIO:
+                return "SELECT id_usuario, id, nombre, tipo, gama, cantidad, precio FROM productos where precio" + simbolo + textoIngresado + " ORDER BY precio";
             default:
                 throw new IllegalArgumentException("Tipo de listado no válido.");
         }
@@ -355,10 +369,10 @@ public class MenuPrincipal extends JFrame {
                 return TipoListado.TIPO;
             case "Gama":
                 return TipoListado.GAMA;
-            case "Cantidades":
-                return TipoListado.CANTIDADES;
-            case "Precios":
-                return TipoListado.PRECIOS;
+            case "Cantidad":
+                return TipoListado.CANTIDAD;
+            case "Precio":
+                return TipoListado.PRECIO;
             default:
                 throw new IllegalArgumentException("Tipo de listado no válido: " + tipoListadoSeleccionado);
         }

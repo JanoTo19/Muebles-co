@@ -57,8 +57,10 @@ public class BaseDatos {
 							JOptionPane.showMessageDialog(null, "Usuario mal escrito", "Error!!",JOptionPane.INFORMATION_MESSAGE);
 						}
 					} else {
-						JOptionPane.showMessageDialog(null, "Usuario no encontrado.", "Error!!",
+						if (usuario != null) {
+							JOptionPane.showMessageDialog(null, "Usuario no encontrado.", "Error!!",
 								JOptionPane.INFORMATION_MESSAGE);
+						}
 					}
 				}
 			}
