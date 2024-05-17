@@ -45,11 +45,6 @@ public class MenuPrincipal extends JFrame {
     private JLabel lblInstruccion;
     private CardLayout cardLayout;
 
-    public static void main(String[] args) {
-        MenuPrincipal m = new MenuPrincipal("Jano");
-        m.setVisible(true);
-    }
-
     /**
      * Constructor de la clase MenuPrincipal.
      * @param nombreUsuario Nombre del usuario activo.
