@@ -29,15 +29,15 @@ import javax.swing.border.EmptyBorder;
  */
 public class AltaProducto extends JFrame {
 
-    private static final long serialVersionUID = 1L;
-    private JPanel miPanel;
-    private JTextField textField_nombre;
-    private JTextField textField_tipo;
+	private final Font miFont = new Font("Tahoma", Font.PLAIN, 20);
+	private static final long serialVersionUID = 1L;
+	private JComboBox<String> comboBoxTiposGama;
     private JTextField textField_cantidad;
+    private JTextField textField_nombre;
     private JTextField textField_precio;
-    private final Font miFont = new Font("Tahoma", Font.PLAIN, 20);
+    private JTextField textField_tipo;
     private JPanel mainPanel;
-    private JComboBox<String> comboBoxTiposGama;
+    private JPanel miPanel;
 
     /**
      * Constructor de la clase AltaProducto.
