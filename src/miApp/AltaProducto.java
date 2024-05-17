@@ -1,14 +1,18 @@
 package miApp;
 
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -50,6 +54,13 @@ public class AltaProducto extends JFrame {
     	setBounds(100, 100, 600, 400);
     	
     	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	
+    	try {
+			Image img = ImageIO.read(new File("./src/files/Icono-App.png"));
+			setIconImage(img);
+		} catch (IOException e) {
+			e.getMessage();
+		}
     	
     	// Etiquetas y campos de texto para ingresar datos del producto
         JLabel lblNombre = new JLabel("Nombre:");

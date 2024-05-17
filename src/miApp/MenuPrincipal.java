@@ -3,14 +3,18 @@ package miApp;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -70,6 +74,13 @@ public class MenuPrincipal extends JFrame {
 
         setBounds(100, 100, 800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        try {
+			Image img = ImageIO.read(new File("./src/files/Icono-App.png"));
+			setIconImage(img);
+		} catch (IOException e) {
+			e.getMessage();
+		}
 
         // Etiqueta para mostrar el nombre de usuario
         JLabel lblUsuario = new JLabel("Usuario: " + nombreUsuario);
@@ -179,7 +190,9 @@ public class MenuPrincipal extends JFrame {
 	                // Elimina la fila de la tabla
 	                ((DefaultTableModel) tablaProductos.getModel()).removeRow(filaSeleccionada);
 	                JOptionPane.showMessageDialog(null, "Producto eliminado exitosamente","Mensaje",JOptionPane.INFORMATION_MESSAGE);
-	            }
+	            } else {
+					JOptionPane.showMessageDialog(null, "Ningun producto seleccionado","Error!!",JOptionPane.INFORMATION_MESSAGE);
+				}
 			}
 		});
 

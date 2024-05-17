@@ -3,10 +3,13 @@ package miApp;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
@@ -15,6 +18,7 @@ import java.util.Base64;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -56,6 +60,14 @@ public class Login extends JFrame { //los métodos están heredados de la clase 
 		//pROPIEDADES DEL MARCO
 		setTitle("LOGIN APP");
 		setBounds(465, 200, 500, 500);
+		
+		try {
+			Image img = ImageIO.read(new File("./src/files/Icono-App.png"));
+			setIconImage(img);
+		} catch (IOException e) {
+			e.getMessage();
+		}
+		
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //es un método de la clase
 		

@@ -1,14 +1,19 @@
 package miApp;
 
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -49,6 +54,13 @@ public class AltaUsuario extends JFrame {
 		//pROPIEDADES DEL MARCO
 		setTitle("AltaUsuario APP");
 		setBounds(100, 100, 450, 300);
+		
+		try {
+			Image img = ImageIO.read(new File("./src/files/Icono-App.png"));
+			setIconImage(img);
+		} catch (IOException e) {
+			e.getMessage();
+		}
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -132,10 +144,11 @@ public class AltaUsuario extends JFrame {
 						//HAY QUE COMPARAR LAS DOS CONTRASEÑAS PARA QUE COINCIDAN Y VALIDARLAS
 						 try (Connection conn = BaseDatos.getConnection()) {
 				            // Preparar la consulta SQL para insertar el usuario
-				            String sql = "INSERT INTO usuarios (username, password) VALUES (?, ?)";
+				            String sql = "INSERT INTO usuarios (id_usuario,username, password) VALUES (?, ?, ?)";
 				            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-				                pstmt.setString(1, textField_username.getText());
-				                pstmt.setString(2, contraseñaCifrada);
+				            	pstmt.setInt(1, obtenerSiguienteIdUsuario());
+				                pstmt.setString(2, textField_username.getText());
+				                pstmt.setString(3, contraseñaCifrada);
 				                pstmt.executeUpdate();
 				                MenuPrincipal ventanaPrincipal= new MenuPrincipal(textField_username.getText());
 				                this.setVisible(false);
@@ -152,6 +165,25 @@ public class AltaUsuario extends JFrame {
 			JOptionPane.showMessageDialog(null, ex instanceof NoSuchAlgorithmException ? "El algoritmo solicitado no está disponible. " + ex.getMessage() : "Error en la base de datos. " + ex.getMessage(),"Error!!",JOptionPane.ERROR_MESSAGE);
 		}
 	}
+	
+	// Método para obtener el siguiente ID de producto
+    private int obtenerSiguienteIdUsuario() {
+        int siguienteId = 1; // Valor predeterminado si la tabla está vacía
+        try(Connection conn = BaseDatos.getConnection()) {
+            String sql = "SELECT MAX(id_usuario) AS max_id FROM usuarios";
+            try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+                if (rs.next()) {
+                    int maxId = rs.getInt("max_id");
+                    if (!rs.wasNull()) {
+                        siguienteId = maxId + 1;
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Error al obtener el siguiente ID del producto: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return siguienteId;
+    }
 	
 	private boolean existeUsuario(String username) throws SQLException {
 	    boolean existe = false;
