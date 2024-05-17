@@ -84,6 +84,7 @@ public class MenuPrincipal extends JFrame {
         setBounds(100, 100, 800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
+        setTitle("Muebles&Co");        
         try {
             Image img = ImageIO.read(new File("./src/files/Icono-App.png"));
             setIconImage(img);
