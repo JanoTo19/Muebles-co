@@ -66,7 +66,7 @@ public class Login extends JFrame {
 	}
 
 	/**
-	 * 
+	 * Metodo que crea la interfaz de la pantalla Login
 	 */
 	private void inicializarComponentes() {
 		miPanel = new JPanel();
@@ -93,7 +93,7 @@ public class Login extends JFrame {
 	}
 
 	/**
-	 * 
+	 * Metodo que crea las etiquetas
 	 */
 	private void agregarEtiquetas() {
 		JLabel lblUsername = new JLabel("Usuario:");
@@ -118,7 +118,7 @@ public class Login extends JFrame {
 	}
 
 	/**
-	 * 
+	 * Metodo que agrega los campos de texto
 	 */
 	private void agregarCamposTexto() {
 		textField_username = new JTextField();
@@ -135,7 +135,7 @@ public class Login extends JFrame {
 	}
 
 	/**
-	 * 
+	 * Metodo que agregar los botones
 	 */
 	private void agregarBotones() {
 		btnLogin = new JButton("LOGIN");
@@ -144,6 +144,9 @@ public class Login extends JFrame {
 		miPanel.add(btnLogin);
 	}
 
+	/**
+	 * Metodo que agrega las acciones a los botones y etiquetas
+	 */
 	private void agregarAcciones() {
 		// Añade oyente para recuperar contraseña
 		lblRecuperarPassword.addMouseListener(new MouseAdapter() {
