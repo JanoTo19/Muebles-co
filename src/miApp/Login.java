@@ -33,12 +33,33 @@ import javax.swing.border.EmptyBorder;
  */
 public class Login extends JFrame {
 
+	/**
+	 * Atributo para la fuente
+	 */
 	private final Font miFont = new Font("Tahoma", Font.PLAIN, 20);
+	/**
+	 * Atributos para las etiquetas
+	 */
 	private JLabel lblRecuperarPassword, lblRegistrarse;
+	/**
+	 * Serial ID
+	 */
 	private static final long serialVersionUID = 1L;
+	/**
+	 * Atributo para el campo de texto contraseña
+	 */
 	private JPasswordField textField_password;
+	/**
+	 * Atributo para el campo de texto usuario
+	 */
 	private JTextField textField_username;
+	/**
+	 * Boton para el login
+	 */
 	private JButton btnLogin;
+	/**
+	 * Panel para la interfaz
+	 */
 	private JPanel miPanel;
 
 	/**
@@ -152,7 +173,7 @@ public class Login extends JFrame {
 		lblRecuperarPassword.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				BaseDatos.RecuperarContraseña();
+				BaseDatos.RecuperarContrasenia();
 			}
 
 			public void mouseEntered(MouseEvent e) {
@@ -198,9 +219,9 @@ public class Login extends JFrame {
 		if (!(textField_username.getText().isBlank() || password.isBlank())) {
 			BaseDatos bbdd = new BaseDatos();
 			try {
-				String contraseñaCifrada = cifrarContraseña(password);
+				String contraseniaCifrada = cifrarContrasenia(password);
 
-				if (bbdd.loginDB(textField_username.getText(), contraseñaCifrada)) {
+				if (bbdd.loginDB(textField_username.getText(), contraseniaCifrada)) {
 					MenuPrincipal ventanaPrincipal = new MenuPrincipal(textField_username.getText());
 					ventanaPrincipal.setVisible(true);
 					this.setVisible(false);
@@ -222,17 +243,17 @@ public class Login extends JFrame {
 	/**
 	 * Método para cifrar una contraseña.
 	 * 
-	 * @param contraseña La contraseña en texto plano
+	 * @param contrasenia La contraseña en texto plano
 	 * @return La contraseña cifrada en formato Base64
 	 */
-	public static String cifrarContraseña(String contraseña) {
+	public static String cifrarContrasenia(String contrasenia) {
 		try {
 			SecretKeySpec se = generadorClave("Muebles&co");
 			Cipher c = Cipher.getInstance("AES");
 
 			c.init(Cipher.ENCRYPT_MODE, se);
 
-			byte[] cadena = contraseña.getBytes("UTF-8");
+			byte[] cadena = contrasenia.getBytes("UTF-8");
 			byte[] encriptada = c.doFinal(cadena);
 			String cadenaEncriptada = Base64.getEncoder().encodeToString(encriptada);
 			return cadenaEncriptada;

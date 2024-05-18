@@ -29,13 +29,29 @@ import javax.swing.border.EmptyBorder;
  */
 public class AltaUsuario extends JFrame {
 
+	/**
+	 * Atributo para el serial id
+	 */
     private static final long serialVersionUID = 1L;
-    private JPanel miPanel;
+    /**
+     * Atributos para crear los paneles
+     */
+    private JPanel miPanel,mainPanel;
+    /**
+     * Atributo para el campo de texto
+     */
     private JTextField textField_username;
-    private JPasswordField textField_password;
+    /**
+     * Atributos para los campos de texto de las contraseñas
+     */
+    private JPasswordField textField_password,passwordField;
+    /**
+     * Atributo para la fuente
+     */
     private final Font miFont = new Font("Tahoma", Font.PLAIN, 20);
-    private JPasswordField passwordField;
-    private JPanel mainPanel;
+    /**
+     * Atributo para los botones
+     */
     private JButton btnLogin;
 
     /**
@@ -151,15 +167,15 @@ public class AltaUsuario extends JFrame {
                         return;
                     }
                     BaseDatos bbdd = new BaseDatos();
-                    String contraseñaCifrada = Login.cifrarContraseña(password);
-                    if (!bbdd.loginDB(textField_username.getText(), contraseñaCifrada)) {
+                    String contraseniaCifrada = Login.cifrarContrasenia(password);
+                    if (!bbdd.loginDB(textField_username.getText(), contraseniaCifrada)) {
                         // Inserta el nuevo usuario en la base de datos
                         try (Connection conn = BaseDatos.getConnection()) {
                             String sql = "INSERT INTO usuarios (id_usuario, username, password) VALUES (?, ?, ?)";
                             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
                                 pstmt.setInt(1, obtenerSiguienteIdUsuario());
                                 pstmt.setString(2, textField_username.getText());
-                                pstmt.setString(3, contraseñaCifrada);
+                                pstmt.setString(3, contraseniaCifrada);
                                 pstmt.executeUpdate();
                                 MenuPrincipal ventanaPrincipal = new MenuPrincipal(textField_username.getText());
                                 this.setVisible(false);

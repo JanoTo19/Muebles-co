@@ -35,14 +35,41 @@ import javax.swing.table.DefaultTableModel;
  */
 public class MenuPrincipal extends JFrame {
 
+	/**
+	 * Atributos para los botones
+	 */
     private JButton btnNuevoProducto, btnVerUsuario, btnListado, btnSalir, btnEliminar, btnVolver;
+    /**
+     * Atributo para el objeto connection
+     */
     private Connection conn = BaseDatos.getConnection();
+    /**
+     * Serial ID
+     */
     private static final long serialVersionUID = 1L;
+    /**
+     * Atributos para los panel de la interfaz grafica
+     */
     private JPanel miPanel, headerPanel, mainPanel, userPanel, cardPanel;
+    /**
+     * Atributos para os menus desplegables
+     */
     private JComboBox<String> comboBoxTiposListado, comboBoxTiposBusqueda;
+    /**
+     * Atributos para las tablas
+     */
     private JTable tablaProductos, tablaUsuarios;
+    /**
+     * Atributos para el campo de texto
+     */
     private JTextField textField;
+    /**
+     * Atributo para una etiqueta
+     */
     private JLabel lblInstruccion;
+    /**
+     * Atributo para cambiar de paneles
+     */
     private CardLayout cardLayout;
 
     /**
@@ -311,7 +338,30 @@ public class MenuPrincipal extends JFrame {
      * Enumeración para los tipos de listados disponibles.
      */
     public enum TipoListado {
-        ID, NOMBRE, TIPO, GAMA, CANTIDAD, PRECIO
+    	/**
+    	 * Atributo id del enum tipolistado
+    	 */
+        ID, 
+    	/**
+    	 * Atributo nombre del enum tipolistado
+    	 */
+        NOMBRE, 
+    	/**
+    	 * Atributo tipo del enum tipolistado
+    	 */
+        TIPO, 
+    	/**
+    	 * Atributo gama del enum tipolistado
+    	 */
+        GAMA, 
+    	/**
+    	 * Atributo cantidad del enum tipolistado
+    	 */
+        CANTIDAD, 
+    	/**
+    	 * Atributo precio del enum tipolistado
+    	 */
+        PRECIO
     }
 
     /**
