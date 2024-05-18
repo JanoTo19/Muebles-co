@@ -29,15 +29,26 @@ import javax.swing.border.EmptyBorder;
  */
 public class AltaProducto extends JFrame {
 
-    private static final long serialVersionUID = 1L;
-    private JPanel miPanel;
-    private JTextField textField_nombre;
-    private JTextField textField_tipo;
-    private JTextField textField_cantidad;
-    private JTextField textField_precio;
-    private final Font miFont = new Font("Tahoma", Font.PLAIN, 20);
-    private JPanel mainPanel;
-    private JComboBox<String> comboBoxTiposGama;
+	/**
+	 * Atributo para la fuente
+	 */
+	private final Font miFont = new Font("Tahoma", Font.PLAIN, 20);
+	/**
+	 * Atributo para el serial id
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
+	 * Atributo para el menu desplegable
+	 */
+	private JComboBox<String> comboBoxTiposGama;
+	/**
+	 * Atributos para los campos de texto
+	 */
+    private JTextField textField_cantidad, textField_nombre, textField_precio, textField_tipo;
+    /**
+     * Atributos para los paneles
+     */
+    private JPanel mainPanel, miPanel;
 
     /**
      * Constructor de la clase AltaProducto.

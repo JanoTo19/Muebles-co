@@ -18,7 +18,13 @@ import javax.swing.JOptionPane;
  */
 public class BaseDatos {
 
+	/**
+	 * Atributo para conectar el archivo properties
+	 */
     private static Properties properties = new Properties();
+    /**
+     * Atributo para conectar la base de datos
+     */
     private static Connection conn;
 
     /**
@@ -47,7 +53,7 @@ public class BaseDatos {
      * Método para recuperar la contraseña de un usuario.
      * Solicita el nombre de usuario y muestra la contraseña desencriptada en un mensaje de diálogo.
      */
-    public static void RecuperarContraseña() {
+    public static void RecuperarContrasenia() {
         String usuario = JOptionPane.showInputDialog(null, "Introduce el nombre de usuario", "Recuperar Contraseña",
                 JOptionPane.INFORMATION_MESSAGE);
 
@@ -84,20 +90,20 @@ public class BaseDatos {
      * Método para verificar el login de un usuario.
      * Compara la contraseña cifrada proporcionada con la almacenada en la base de datos.
      * @param username El nombre de usuario.
-     * @param contraseñaCifrada La contraseña cifrada proporcionada.
+     * @param contraseniaCifrada La contraseña cifrada proporcionada.
      * @return true si la contraseña coincide, false en caso contrario.
      * @throws NoSuchAlgorithmException Si hay un problema con el algoritmo de cifrado.
      * @throws SQLException Si hay un problema al acceder a la base de datos.
      */
-    public boolean loginDB(String username, String contraseñaCifrada) throws NoSuchAlgorithmException, SQLException {
+    public boolean loginDB(String username, String contraseniaCifrada) throws NoSuchAlgorithmException, SQLException {
         try (Connection conn = getConnection()) {
             String sql = "SELECT password FROM usuarios WHERE username = ?";
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setString(1, username);
                 try (ResultSet rs = pstmt.executeQuery()) {
                     if (rs.next()) {
-                        String contraseñaCifradaBD = rs.getString("password");
-                        return contraseñaCifradaBD.equals(contraseñaCifrada);
+                        String contraseniaCifradaBD = rs.getString("password");
+                        return contraseniaCifradaBD.equals(contraseniaCifrada);
                     }
                 }
             }
