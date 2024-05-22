@@ -171,11 +171,13 @@ public class AltaUsuario extends JFrame {
                     if (!bbdd.loginDB(textField_username.getText(), contraseniaCifrada)) {
                         // Inserta el nuevo usuario en la base de datos
                         try (Connection conn = BaseDatos.getConnection()) {
-                            String sql = "INSERT INTO usuarios (id_usuario, username, password) VALUES (?, ?, ?)";
+                            String sql = "INSERT INTO usuarios (id_usuario, username, password,telefono) VALUES (?, ?, ?, ?)";
+                            int num = (int)(Math.random() * (999999999 - 100000000 + 1)) + 100000000;
                             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
                                 pstmt.setInt(1, obtenerSiguienteIdUsuario());
                                 pstmt.setString(2, textField_username.getText());
                                 pstmt.setString(3, contraseniaCifrada);
+                                pstmt.setInt(4, num);
                                 pstmt.executeUpdate();
                                 MenuPrincipal ventanaPrincipal = new MenuPrincipal(textField_username.getText());
                                 this.setVisible(false);
