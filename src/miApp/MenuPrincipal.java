@@ -418,6 +418,9 @@ public class MenuPrincipal extends JFrame {
      */
     private String construirConsultaSQL(TipoListado tipoListado, String textoIngresado) {
         String simbolo = (String) comboBoxTiposBusqueda.getSelectedItem();
+        if (textoIngresado.isBlank()) {
+			return "SELECT id_usuario, id, nombre, tipo, gama, cantidad, precio FROM productos";
+		}
         switch (tipoListado) {
             case ID:
                 return "SELECT id_usuario, id, nombre, tipo, gama, cantidad, precio FROM productos WHERE id" + simbolo + textoIngresado + " ORDER BY id";
