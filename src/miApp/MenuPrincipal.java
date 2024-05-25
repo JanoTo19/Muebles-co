@@ -128,7 +128,7 @@ public class MenuPrincipal extends JFrame {
         lblColumna.setBounds(472, 29, 280, 14);
         mainPanel.add(lblColumna);
 
-        lblInstruccion = new JLabel("Indique =,<,> Ejemplo: [>100] o [='mueble']");
+        lblInstruccion = new JLabel("Indique las funciones de busqueda");
         lblInstruccion.setBounds(472, 64, 280, 14);
         mainPanel.add(lblInstruccion);
 

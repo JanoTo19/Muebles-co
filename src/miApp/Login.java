@@ -102,8 +102,8 @@ public class Login extends JFrame {
 		try {
 			Image img = ImageIO.read(new File("./src/files/Icono-App.png"));
 			setIconImage(img);
-		} catch (IOException e) {
-			e.getMessage();
+		} catch (IOException ex) {
+			JOptionPane.showMessageDialog(null, ex.getMessage());
 		}
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
